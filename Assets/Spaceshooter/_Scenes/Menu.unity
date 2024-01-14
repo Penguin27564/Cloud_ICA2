@@ -163,8 +163,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5, y: -5}
-  m_SizeDelta: {x: 60, y: 60}
+  m_AnchoredPosition: {x: 4, y: -4}
+  m_SizeDelta: {x: 55, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &25361288
 MonoBehaviour:
@@ -848,6 +848,7 @@ GameObject:
   - component: {fileID: 118841403}
   - component: {fileID: 118841405}
   - component: {fileID: 118841404}
+  - component: {fileID: 118841406}
   m_Layer: 5
   m_Name: Leaderboard Tab
   m_TagString: Untagged
@@ -889,14 +890,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.9960785, b: 0.9960785, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1692119422, guid: 679846504945b48488fa7fc13086c7d8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 16d03a14da9895648a0ba480e28b7912, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -914,6 +915,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 118841402}
   m_CullTransparentMesh: 1
+--- !u!114 &118841406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118841402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f44b8866099b33a4cba33f40c2e0c7ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tabGroup: {fileID: 1005422759}
+  background: {fileID: 0}
+  childBackground: {fileID: 0}
 --- !u!1 &127688449
 GameObject:
   m_ObjectHideFlags: 0
@@ -1140,6 +1156,7 @@ GameObject:
   - component: {fileID: 139469159}
   - component: {fileID: 139469161}
   - component: {fileID: 139469160}
+  - component: {fileID: 139469162}
   m_Layer: 5
   m_Name: Shop Tab
   m_TagString: Untagged
@@ -1181,14 +1198,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.9960785, b: 0.9960785, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1692119422, guid: 679846504945b48488fa7fc13086c7d8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 16d03a14da9895648a0ba480e28b7912, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1206,6 +1223,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 139469158}
   m_CullTransparentMesh: 1
+--- !u!114 &139469162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139469158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f44b8866099b33a4cba33f40c2e0c7ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tabGroup: {fileID: 1005422759}
+  background: {fileID: 0}
+  childBackground: {fileID: 0}
 --- !u!1 &163972426
 GameObject:
   m_ObjectHideFlags: 0
@@ -1364,6 +1396,7 @@ GameObject:
   - component: {fileID: 167425476}
   - component: {fileID: 167425478}
   - component: {fileID: 167425477}
+  - component: {fileID: 167425479}
   m_Layer: 5
   m_Name: Friends Tab
   m_TagString: Untagged
@@ -1405,14 +1438,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.9960785, b: 0.9960785, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1692119422, guid: 679846504945b48488fa7fc13086c7d8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 16d03a14da9895648a0ba480e28b7912, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1430,6 +1463,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 167425475}
   m_CullTransparentMesh: 1
+--- !u!114 &167425479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 167425475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f44b8866099b33a4cba33f40c2e0c7ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tabGroup: {fileID: 1005422759}
+  background: {fileID: 0}
+  childBackground: {fileID: 0}
 --- !u!1 &202033310
 GameObject:
   m_ObjectHideFlags: 0
@@ -2550,8 +2598,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5, y: -5}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 4, y: -4}
+  m_SizeDelta: {x: 45, y: 45}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &513320227
 MonoBehaviour:
@@ -2566,14 +2614,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.9960785, b: 0.9960785, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1878755896, guid: e853602d63fd55744a6e46fc5dcccd8b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 904bfa3684e6c0549a5a3e264e12a769, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2706,7 +2754,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5, y: -5}
+  m_AnchoredPosition: {x: 4, y: -3}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &645122829
@@ -2722,14 +2770,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.9960785, b: 0.9960785, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 1991140648, guid: e853602d63fd55744a6e46fc5dcccd8b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2ef4ca6efd8f9b8468cce515777986f9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3870,6 +3918,7 @@ GameObject:
   - component: {fileID: 840958586}
   - component: {fileID: 840958589}
   - component: {fileID: 840958588}
+  - component: {fileID: 840958590}
   m_Layer: 5
   m_Name: Close Menu Tab
   m_TagString: Untagged
@@ -3911,14 +3960,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.9960785, b: 0.9960785, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1692119422, guid: 679846504945b48488fa7fc13086c7d8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 16d03a14da9895648a0ba480e28b7912, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4009,6 +4058,21 @@ MonoBehaviour:
   - {fileID: 1744638949}
   _UIToEnable:
   - {fileID: 1626486604}
+--- !u!114 &840958590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840958584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f44b8866099b33a4cba33f40c2e0c7ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tabGroup: {fileID: 1005422759}
+  background: {fileID: 0}
+  childBackground: {fileID: 0}
 --- !u!1 &851428782
 GameObject:
   m_ObjectHideFlags: 0
@@ -4657,6 +4721,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1005422757}
   - component: {fileID: 1005422758}
+  - component: {fileID: 1005422759}
   m_Layer: 5
   m_Name: Tab List
   m_TagString: Untagged
@@ -4715,6 +4780,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1005422759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1005422756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db46d2f70e0ebd6459c4edd2d0c79826, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tabIdle: {r: 0, g: 0.9960785, b: 0.9960785, a: 1}
+  _tabActive: {r: 1, g: 0.82745105, b: 0.21960786, a: 1}
 --- !u!1 &1007385496
 GameObject:
   m_ObjectHideFlags: 0
@@ -5379,7 +5458,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2, y: -2}
+  m_AnchoredPosition: {x: 2, y: -4}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1065801794
@@ -5395,14 +5474,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 533326259, guid: e853602d63fd55744a6e46fc5dcccd8b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 877263f8591689d4281119d34c11fb42, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6834,8 +6913,9 @@ GameObject:
   - component: {fileID: 1239402458}
   - component: {fileID: 1239402460}
   - component: {fileID: 1239402459}
+  - component: {fileID: 1239402461}
   m_Layer: 5
-  m_Name: Skin Selection Tab
+  m_Name: Guild Tab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6875,14 +6955,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.9960785, b: 0.9960785, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1692119422, guid: 679846504945b48488fa7fc13086c7d8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 16d03a14da9895648a0ba480e28b7912, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6900,6 +6980,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1239402457}
   m_CullTransparentMesh: 1
+--- !u!114 &1239402461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239402457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f44b8866099b33a4cba33f40c2e0c7ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tabGroup: {fileID: 1005422759}
+  background: {fileID: 0}
+  childBackground: {fileID: 0}
 --- !u!1 &1253154426
 GameObject:
   m_ObjectHideFlags: 0
