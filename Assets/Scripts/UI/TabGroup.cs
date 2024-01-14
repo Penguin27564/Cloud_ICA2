@@ -5,7 +5,11 @@ using UnityEngine;
 public class TabGroup : MonoBehaviour
 {
     [SerializeField]
-    private Color _tabIdle, _tabActive;
+    private Color _tabIdle, _tabActive, _tabHover;
+
+    [SerializeField]
+    private List<GameObject> _objectsToSwap;
+
     private List<TabButton> _tabButtons;
     private TabButton _selectedTab;
 
@@ -22,6 +26,11 @@ public class TabGroup : MonoBehaviour
     public void OnTabEnter(TabButton button)
     {
         ResetTabs();
+        if (_selectedTab == null || button != _selectedTab)
+        {
+            button.background.color = _tabHover;
+            button.childBackground.color = _tabHover;
+        }
     }
 
     public void OnTabExit(TabButton button)
@@ -35,6 +44,20 @@ public class TabGroup : MonoBehaviour
         ResetTabs();
         button.background.color = _tabActive;
         button.childBackground.color = _tabActive;
+
+        int index = button.transform.GetSiblingIndex() - 1;
+
+        for (int i = 0; i < _objectsToSwap.Count; i++)
+        {
+            if (i == index)
+            {
+                _objectsToSwap[i].SetActive(true);
+            }
+            else
+            {
+                _objectsToSwap[i].SetActive(false);
+            }
+        }
     }
 
     public void ResetTabs()
