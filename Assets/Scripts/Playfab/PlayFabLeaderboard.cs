@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PlayFab;
 using PlayFab.ClientModels;
@@ -6,6 +7,26 @@ using UnityEngine;
 
 public class PlayFabLeaderboard : MonoBehaviour
 {
+    private static PlayFabLeaderboard _instance;
+
+    public static PlayFabLeaderboard Instance
+    {
+        get
+        {
+            if (_instance == null) _instance = new PlayFabLeaderboard();
+            return _instance;
+        }
+    }
+
+    public PlayFabLeaderboard()
+    {
+        _instance = this;
+    }
+
+    public Action OnUpdateLeaderboardType;
+
+    public int leaderboardType = 0; //0 - Global, 1 - Proximity, 2 - Friend (might change to enum)
+
     [SerializeField]
     private UI_Leaderboard _leaderboardScript;
 
@@ -17,8 +38,6 @@ public class PlayFabLeaderboard : MonoBehaviour
     
     [SerializeField]
     private int _maxResultsCount = 20;
-
-    private bool _isGlobal = true;
 
     public void OnButtonSendLeaderboard()
     {
@@ -38,17 +57,25 @@ public class PlayFabLeaderboard : MonoBehaviour
         PlayFabClientAPI.UpdatePlayerStatistics(req, OnLeaderboardUpdate, OnError);
     }
 
-    public void OnButtonSwitchLeaderboard()
+    public void SetToGlobal()
     {
-        _isGlobal = !_isGlobal;
-        if (_isGlobal)
-        {
-            OnButtonGetLeaderboard();
-        }
-        else
-        {
-            OnButtonGetProximityLeaderboard();
-        }
+        leaderboardType = 0;
+        OnButtonGetLeaderboard();
+        OnUpdateLeaderboardType.Invoke();
+    }
+
+    public void SetToProximity()
+    {
+        leaderboardType = 1;
+        OnButtonGetProximityLeaderboard();
+        OnUpdateLeaderboardType.Invoke();
+    }
+
+    public void SetToFriends()
+    {
+        leaderboardType = 2;
+        OnButtonGetFriendLB();
+        OnUpdateLeaderboardType.Invoke();
     }
 
     public void OnButtonGetLeaderboard()
@@ -82,6 +109,17 @@ public class PlayFabLeaderboard : MonoBehaviour
         };
 
         PlayFabClientAPI.GetLeaderboardAroundPlayer(proximityLeaderboardRequest, OnProximityLeaderboardGet, OnError);
+    }
+
+    public void OnButtonGetFriendLB()
+    {
+        var friendLeaderboardRequest = new GetFriendLeaderboardRequest
+        {
+            StatisticName = "Highscore",
+            MaxResultsCount = _maxResultsCount
+        };
+
+        PlayFabClientAPI.GetFriendLeaderboard(friendLeaderboardRequest, OnLeaderboardGet, OnError);
     }
 
     private void OnProximityLeaderboardGet(GetLeaderboardAroundPlayerResult r)

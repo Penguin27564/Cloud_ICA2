@@ -29,7 +29,7 @@ public class TabGroup : MonoBehaviour
         if (_selectedTab == null || button != _selectedTab)
         {
             button.background.color = _tabHover;
-            button.childBackground.color = _tabHover;
+            if (button.childBackground) button.childBackground.color = _tabHover;
         }
     }
 
@@ -43,7 +43,7 @@ public class TabGroup : MonoBehaviour
         _selectedTab = button;
         ResetTabs();
         button.background.color = _tabActive;
-        button.childBackground.color = _tabActive;
+        if (button.childBackground) button.childBackground.color = _tabActive;
 
         int index = button.transform.GetSiblingIndex() - 1;
 
@@ -66,7 +66,7 @@ public class TabGroup : MonoBehaviour
         {
             if (_selectedTab != null && _selectedTab ==  button) { continue; }
             button.background.color = _tabIdle;
-            button.childBackground.color = _tabIdle;
+            if (button.childBackground) button.childBackground.color = _tabIdle;
         }
     }
 }
