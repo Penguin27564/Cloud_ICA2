@@ -29,6 +29,9 @@ public class FriendManager : MonoBehaviour
     [SerializeField]
     private TMP_InputField if_getFriend, if_unfriend;
 
+    [SerializeField]
+    private FriendListDisplay _friendDisplayScript;
+
     public FriendIdType selectedFriendIdType = FriendIdType.Displayname;
 
     private List<FriendInfo> _friendList = null;
@@ -148,9 +151,10 @@ public class FriendManager : MonoBehaviour
         friendsCache.ForEach(f =>
         {
             Debug.Log("PlayfabID: " + f.FriendPlayFabId + " , display name: " + f.TitleDisplayName);
-            // Display friend
+            _friendDisplayScript.AddItem(f.TitleDisplayName);
             if(f.Profile != null) Debug.Log(f.FriendPlayFabId + " / " + f.Profile.DisplayName);
         });
+        _friendDisplayScript.DisplayFriendsList();
     }
 
     private void DisplayPlayFabError(PlayFabError error) 

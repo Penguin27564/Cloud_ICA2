@@ -388,6 +388,7 @@ GameObject:
   - component: {fileID: 1543871781749619419}
   - component: {fileID: 6863223234377226892}
   - component: {fileID: 4693954362820515266}
+  - component: {fileID: -29551358193034901}
   m_Layer: 5
   m_Name: Friend Element
   m_TagString: Untagged
@@ -456,3 +457,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-29551358193034901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4982793274714915008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 031e7181c8023bb46ae8974f45f07b02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nameText: {fileID: 3072429389480129629}
