@@ -72,4 +72,9 @@ public class TabGroup : MonoBehaviour
             if (button.childBackground) button.childBackground.color = _tabIdle;
         }
     }
+
+    private void OnEnable()
+    {
+        _selectedTab = _tabButtons[0];
+    }
 }

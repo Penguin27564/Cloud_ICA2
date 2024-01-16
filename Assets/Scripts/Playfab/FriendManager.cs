@@ -93,6 +93,21 @@ public class FriendManager : MonoBehaviour
         OnUpdateSelectedFriendID.Invoke();
     }
 
+    public void AddFriendByDisplayName(string name)
+    {
+        var request = new AddFriendRequest
+        {
+            FriendTitleDisplayName = name
+        };
+
+        // Execute request and update friends when done
+        PlayFabClientAPI.AddFriend(request,
+        result =>
+        {
+            MessageBoxManager.Instance.DisplayMessage("Added " + name + "!");
+        }, DisplayPlayFabError);
+    }
+
     public void RemoveFriendByDisplayName(string name)
     {
         foreach (var f in _friendList)
@@ -176,10 +191,5 @@ public class FriendManager : MonoBehaviour
     private void DisplayPlayFabError(PlayFabError error) 
     {
          Debug.LogError(error.GenerateErrorReport()); 
-    }
-
-    private void DisplayError(string error) 
-    {
-         Debug.LogError(error);
     }
 }

@@ -25,11 +25,11 @@ public class FriendListDisplay : MonoBehaviour
         newElement.transform.localScale = Vector3.one;
         _elementsToAdd.Add(newElement.gameObject);
         newElement.gameObject.SetActive(false);
-        if (_noUsersText.activeInHierarchy) _noUsersText.SetActive(false);
     }
 
     public void DisplayFriendsList()
     {
+        _noUsersText.SetActive(!(transform.childCount > 0));
         foreach (var element in _elementsToAdd)
         {
             element.SetActive(true);
