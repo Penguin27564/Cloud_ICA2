@@ -2699,7 +2699,7 @@ RectTransform:
   m_GameObject: {fileID: 348510972}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1091376056}
@@ -15187,7 +15187,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _messageBox: {fileID: 348510972}
-  _textDisplayDuration: 3
+  _textDisplayDuration: 2
 --- !u!4 &2019982260
 Transform:
   m_ObjectHideFlags: 0

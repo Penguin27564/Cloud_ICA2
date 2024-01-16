@@ -129,6 +129,7 @@ public class FriendManager : MonoBehaviour
         result =>
         {
             Debug.Log("Friend added successfully!");
+            MessageBoxManager.Instance.DisplayMessage("Added " + friendId + "!");
         }, DisplayPlayFabError);
     }
 
@@ -155,6 +156,7 @@ public class FriendManager : MonoBehaviour
         result =>
         {
             Debug.Log("Unfriended!");
+            MessageBoxManager.Instance.DisplayMessage("Unfriended!");
             GetFriends();
         }, DisplayPlayFabError);
     }
