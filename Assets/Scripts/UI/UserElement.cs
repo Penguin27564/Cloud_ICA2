@@ -14,8 +14,8 @@ public class UserElement : MonoBehaviour
 
     public void AddFriend()
     {
-        Debug.Log(_nameText.text);
         FriendManager.Instance.AddFriendByDisplayName(_nameText.text);
+        Destroy(gameObject);
     }
 
     private void Awake()

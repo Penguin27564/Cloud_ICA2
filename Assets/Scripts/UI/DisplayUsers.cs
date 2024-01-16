@@ -44,7 +44,6 @@ public class DisplayUsers : MonoBehaviour
         ClearDisplay();
         GetUserList();
     }
-    //---------------------------------------------
     public void GetUserList()
     {
         var leaderboardRequest = new GetLeaderboardRequest
@@ -67,10 +66,10 @@ public class DisplayUsers : MonoBehaviour
         },
         result => 
         {
-            _addUser = true;
             _friendList = result.Friends;
             foreach (var element in r.Leaderboard)
             {
+                _addUser = true;
                 foreach (var friend in _friendList)
                 {
                     if (friend.FriendPlayFabId == element.PlayFabId)
