@@ -15,6 +15,11 @@ public class FriendElement : MonoBehaviour
         _nameText.text = name;
     }
 
+    public void RemoveFriend()
+    {
+        FriendManager.Instance.RemoveFriendByDisplayName(_nameText.text);
+    }
+
     private void Start()
     {
         _rectTransform = GetComponent<RectTransform>();

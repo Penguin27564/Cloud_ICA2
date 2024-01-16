@@ -38,7 +38,6 @@ public class FriendListDisplay : MonoBehaviour
 
     public void ClearDisplay()
     {
-        _elementsToAdd.Clear();
         foreach (Transform child in transform)
         {
            Destroy(child.gameObject);
@@ -47,6 +46,7 @@ public class FriendListDisplay : MonoBehaviour
 
     private void OnEnable()
     {
+        _elementsToAdd.Clear();
         ClearDisplay();
         FriendManager.Instance.GetFriends();
     }

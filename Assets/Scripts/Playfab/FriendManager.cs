@@ -93,6 +93,18 @@ public class FriendManager : MonoBehaviour
         OnUpdateSelectedFriendID.Invoke();
     }
 
+    public void RemoveFriendByDisplayName(string name)
+    {
+        foreach (var f in _friendList)
+        {
+            if (f.TitleDisplayName == name)
+            {
+                RemoveFriendByID(f.FriendPlayFabId);
+                return;
+            }
+        }
+    }
+
     private void AddFriend(FriendIdType idType, string friendId)
     {
         var request = new AddFriendRequest();
@@ -143,11 +155,13 @@ public class FriendManager : MonoBehaviour
         result =>
         {
             Debug.Log("Unfriended!");
+            GetFriends();
         }, DisplayPlayFabError);
     }
 
     private void DisplayFriends(List<FriendInfo> friendsCache)
     {
+        _friendDisplayScript.ClearDisplay();
         friendsCache.ForEach(f =>
         {
             Debug.Log("PlayfabID: " + f.FriendPlayFabId + " , display name: " + f.TitleDisplayName);
