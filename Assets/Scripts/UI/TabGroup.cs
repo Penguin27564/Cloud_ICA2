@@ -10,6 +10,9 @@ public class TabGroup : MonoBehaviour
     [SerializeField]
     private List<GameObject> _objectsToSwap;
 
+    [SerializeField]
+    private int _tabsToIgnore = 0;
+
     private List<TabButton> _tabButtons;
     private TabButton _selectedTab;
 
@@ -45,7 +48,7 @@ public class TabGroup : MonoBehaviour
         button.background.color = _tabActive;
         if (button.childBackground) button.childBackground.color = _tabActive;
 
-        int index = button.transform.GetSiblingIndex() - 1;
+        int index = button.transform.GetSiblingIndex() - _tabsToIgnore;
 
         for (int i = 0; i < _objectsToSwap.Count; i++)
         {
