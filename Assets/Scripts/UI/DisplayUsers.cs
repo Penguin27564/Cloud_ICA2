@@ -11,6 +11,7 @@ public class DisplayUsers : MonoBehaviour
     private List<GameObject> _elementsToAdd = new();
     private List<FriendInfo> _friendList = new();
     private bool _addUser = false;
+    private RectTransform _rectTransform;
 
     public void AddItem(string name)
     {
@@ -28,6 +29,8 @@ public class DisplayUsers : MonoBehaviour
         {
             element.SetActive(true);
         }
+        Vector2 contentSize = new(220 * transform.childCount, _rectTransform.sizeDelta.y);
+        _rectTransform.sizeDelta = contentSize;
     }
 
     public void ClearDisplay()
@@ -74,7 +77,6 @@ public class DisplayUsers : MonoBehaviour
                 {
                     if (friend.FriendPlayFabId == element.PlayFabId)
                     {
-                        Debug.Log("REMOVED USER");
                         _addUser = false;
                     }
                 }
@@ -93,5 +95,10 @@ public class DisplayUsers : MonoBehaviour
     private void DisplayPlayFabError(PlayFabError error) 
     {
          Debug.LogError(error.GenerateErrorReport()); 
+    }
+
+    private void Awake()
+    {
+        _rectTransform = GetComponent<RectTransform>();
     }
 }

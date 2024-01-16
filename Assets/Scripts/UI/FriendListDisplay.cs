@@ -13,6 +13,8 @@ public class FriendListDisplay : MonoBehaviour
     [SerializeField]
     private int _maxElements = 20;
 
+    private RectTransform _rectTransform;
+
     private List<GameObject> _elementsToAdd = new();
 
     public void AddItem(string name)
@@ -34,6 +36,8 @@ public class FriendListDisplay : MonoBehaviour
         {
             element.SetActive(true);
         }
+        Vector2 contentSize = new(220 * transform.childCount * 0.5f, _rectTransform.sizeDelta.y);
+        _rectTransform.sizeDelta = contentSize;
     }
 
     public void ClearDisplay()
@@ -49,5 +53,10 @@ public class FriendListDisplay : MonoBehaviour
         _elementsToAdd.Clear();
         ClearDisplay();
         FriendManager.Instance.GetFriends();
+    }
+
+    private void Awake()
+    {
+        _rectTransform = GetComponent<RectTransform>();
     }
 }
