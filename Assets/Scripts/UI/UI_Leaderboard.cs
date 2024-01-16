@@ -11,17 +11,11 @@ public class UI_Leaderboard : MonoBehaviour
     [SerializeField]
     private float _timeBetweenElementDisplay = 0.3f;
 
-    [SerializeField]
-    private int _maxElements = 20;
-
     private RectTransform _rectTransform;
 
     private List<GameObject> _elementsToAdd = new();
     public void AddItem(float pos, string name, float score)
     {
-        // Max leaderboard size
-        if (transform.childCount >= _maxElements) return;
-
         GameObject newElement = Instantiate(_leaderboardElement);
         newElement.GetComponent<UI_LeaderboardElement>().EnterStats(pos + 1, name, score);
         newElement.transform.SetParent(transform);
@@ -38,7 +32,7 @@ public class UI_Leaderboard : MonoBehaviour
             element.SetActive(true);
             yield return new WaitForSeconds(_timeBetweenElementDisplay);
         }
-        Vector2 contentSize = new(0,  Mathf.Clamp(89 + 89 * transform.childCount, 0, (_maxElements + 1) * 89));
+        Vector2 contentSize = new(0,  89 * transform.childCount - 89);
         _rectTransform.sizeDelta = contentSize;
     }
 
@@ -47,8 +41,10 @@ public class UI_Leaderboard : MonoBehaviour
         _elementsToAdd.Clear();
         foreach (Transform child in transform)
         {
-           Destroy(child.gameObject);
+            Destroy(child.gameObject);
+            Debug.Log("Destroy child");
         }
+        Debug.Log("CLEAR LEADERBOARD, CHILD COUNT: " + transform.childCount);
     }
 
     private void OnEnable()
