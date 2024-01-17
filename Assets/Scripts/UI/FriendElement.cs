@@ -20,6 +20,16 @@ public class FriendElement : MonoBehaviour
         FriendManager.Instance.RemoveFriendByDisplayName(_nameText.text);
     }
 
+    public void AcceptFriendRequest()
+    {
+        FriendManager.Instance.AcceptFriendRequest();
+    }
+
+    public void RejectFriendRequest()
+    {
+        FriendManager.Instance.RejectFriendRequest();
+    }
+
     private void Start()
     {
         _rectTransform = GetComponent<RectTransform>();

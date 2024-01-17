@@ -108,31 +108,6 @@ public class FriendManager : MonoBehaviour
 
     public void AddFriend(FriendIdType idType, string friendId)
     {
-        // var request = new AddFriendRequest();
-        // switch (idType)
-        // {
-        //     case FriendIdType.PlayFabID:
-        //         request.FriendPlayFabId = friendId;
-        //         break;
-        //     case FriendIdType.Username:
-        //         request.FriendUsername = friendId;
-        //         break;
-        //     case FriendIdType.Email:
-        //         request.FriendEmail = friendId;
-        //         break;
-        //     case FriendIdType.Displayname:
-        //         request.FriendTitleDisplayName = friendId;
-        //         break;
-        // }
-
-        // // Execute request and update friends when done
-        // PlayFabClientAPI.AddFriend(request,
-        // result =>
-        // {
-        //     Debug.Log("Friend added successfully!");
-        //     MessageBoxManager.Instance.DisplayMessage("Added " + friendId + "!");
-        // }, DisplayPlayFabError);
-
         var request = new GetAccountInfoRequest();
         switch (idType)
         {
@@ -168,6 +143,16 @@ public class FriendManager : MonoBehaviour
             }, DisplayPlayFabError);
         }, DisplayPlayFabError);
 
+        
+    }
+
+    public void AcceptFriendRequest()
+    {
+
+    }
+
+    public void RejectFriendRequest()
+    {
         
     }
 
