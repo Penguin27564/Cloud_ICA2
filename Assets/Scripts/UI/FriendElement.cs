@@ -18,16 +18,19 @@ public class FriendElement : MonoBehaviour
     public void RemoveFriend()
     {
         FriendManager.Instance.RemoveFriendByDisplayName(_nameText.text);
+        Destroy(gameObject);
     }
 
     public void AcceptFriendRequest()
     {
-        FriendManager.Instance.AcceptFriendRequest();
+        FriendManager.Instance.AcceptFriendRequest(_nameText.text);
+        Destroy(gameObject);
     }
 
     public void RejectFriendRequest()
     {
-        FriendManager.Instance.RejectFriendRequest();
+        FriendManager.Instance.RejectFriendRequest(_nameText.text);
+        Destroy(gameObject);
     }
 
     private void Start()

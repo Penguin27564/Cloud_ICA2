@@ -5,6 +5,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 using TMPro;
 using System;
+using System.Reflection;
 
 public class FriendManager : MonoBehaviour
 {
@@ -146,14 +147,56 @@ public class FriendManager : MonoBehaviour
         
     }
 
-    public void AcceptFriendRequest()
+    public void AcceptFriendRequest(string name)
     {
+        var request = new GetAccountInfoRequest
+        {
+            TitleDisplayName = name
+        };
+        PlayFabClientAPI.GetAccountInfo(request,
+        result =>
+        {
+            var csrequest = new ExecuteCloudScriptRequest
+            {
+                FunctionName = "AcceptFriendRequest",
+                FunctionParameter = new
+                {
+                    FriendPlayFabId = result.AccountInfo.PlayFabId
+                }
+            };
 
+            PlayFabClientAPI.ExecuteCloudScript(csrequest,
+            result =>
+            {
+                MessageBoxManager.Instance.DisplayMessage("Accepted " + name + " as friend!");
+            }, DisplayPlayFabError);
+        }, DisplayPlayFabError);
     }
 
-    public void RejectFriendRequest()
+    public void RejectFriendRequest(string name)
     {
-        
+        var request = new GetAccountInfoRequest
+        {
+            TitleDisplayName = name
+        };
+        PlayFabClientAPI.GetAccountInfo(request,
+        result =>
+        {
+            var csrequest = new ExecuteCloudScriptRequest
+            {
+                FunctionName = "DenyFriendRequest",
+                FunctionParameter = new
+                {
+                    FriendPlayFabId = result.AccountInfo.PlayFabId
+                }
+            };
+
+            PlayFabClientAPI.ExecuteCloudScript(csrequest,
+            result =>
+            {
+                MessageBoxManager.Instance.DisplayMessage("Rejected " + name + "'s request.");
+            }, DisplayPlayFabError);
+        }, DisplayPlayFabError);
     }
 
     private void RemoveFriendByInfo(FriendInfo friendInfo)
@@ -180,7 +223,6 @@ public class FriendManager : MonoBehaviour
         {
             Debug.Log("Unfriended!");
             MessageBoxManager.Instance.DisplayMessage("Unfriended!");
-            GetFriends(false);
         }, DisplayPlayFabError);
     }
 
@@ -201,14 +243,11 @@ public class FriendManager : MonoBehaviour
     
     private void DisplayRequests(List<FriendInfo> friendsCache)
     {
-        Debug.Log("Displaying requests");
         _requestDisplayGrid.ClearDisplay();
         friendsCache.ForEach(f =>
         {
-            if (f.Tags[0] == "requestee" || f.Tags[0] == "requester")
+            if (f.Tags[0] == "requester")
             {
-                //Debug.Log("PlayfabID: " + f.FriendPlayFabId + " , display name: " + f.TitleDisplayName);
-                Debug.Log(f.Tags);
                 _requestDisplayGrid.AddItem(f.TitleDisplayName);
             }
         });
