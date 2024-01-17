@@ -11,7 +11,7 @@ public class FriendListDisplay : MonoBehaviour
     private FriendElement _friendElement;
 
     [SerializeField]
-    private int _maxElements = 20;
+    private bool _isPending = false;
 
     private RectTransform _rectTransform;
 
@@ -19,8 +19,6 @@ public class FriendListDisplay : MonoBehaviour
 
     public void AddItem(string name)
     {
-        if (transform.childCount >= _maxElements) return;
-
         FriendElement newElement = Instantiate(_friendElement);
         newElement.AddElement(name);
         newElement.transform.SetParent(transform);
@@ -52,7 +50,7 @@ public class FriendListDisplay : MonoBehaviour
     {
         _elementsToAdd.Clear();
         ClearDisplay();
-        FriendManager.Instance.GetFriends();
+        FriendManager.Instance.GetFriends(_isPending);
     }
 
     private void Awake()

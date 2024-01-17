@@ -2208,9 +2208,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -17}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &178871144
 MonoBehaviour:
@@ -5558,7 +5558,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _noUsersText: {fileID: 1229730769}
   _friendElement: {fileID: -29551358193034901, guid: ea8c52dc4d7cbe7409647eee4c951161, type: 3}
-  _maxElements: 100
+  _isPending: 0
 --- !u!1 &651146315
 GameObject:
   m_ObjectHideFlags: 0
@@ -6010,7 +6010,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &664854236
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9232,9 +9232,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: -17}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1010959737
 MonoBehaviour:
@@ -12118,7 +12118,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   if_getFriend: {fileID: 595157575}
   if_unfriend: {fileID: 0}
-  _friendDisplayScript: {fileID: 647178848}
+  _friendDisplayGrid: {fileID: 647178848}
+  _requestDisplayGrid: {fileID: 1824406340}
   selectedFriendIdType: 3
 --- !u!4 &1278490466
 Transform:
@@ -12671,7 +12672,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1453771327
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12864,7 +12865,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -15916,8 +15917,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _noUsersText: {fileID: 1278182560}
-  _friendElement: {fileID: -29551358193034901, guid: ea8c52dc4d7cbe7409647eee4c951161, type: 3}
-  _maxElements: 100
+  _friendElement: {fileID: -29551358193034901, guid: ac2ad8f5fe1fda343a01e120d7d12b08, type: 3}
+  _isPending: 1
 --- !u!114 &1824406341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17566,7 +17567,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}

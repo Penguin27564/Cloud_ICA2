@@ -52,7 +52,8 @@ public class DisplayUsers : MonoBehaviour
         var leaderboardRequest = new GetLeaderboardRequest
         {
             StatisticName = "Highscore",
-            StartPosition = 0
+            StartPosition = 0,
+            MaxResultsCount = 100
         };
 
         PlayFabClientAPI.GetLeaderboard(leaderboardRequest, OnUserListGet, OnError);

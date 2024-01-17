@@ -14,7 +14,7 @@ public class UserElement : MonoBehaviour
 
     public void AddFriend()
     {
-        FriendManager.Instance.AddFriendByDisplayName(_nameText.text);
+        FriendManager.Instance.AddFriend(FriendManager.FriendIdType.Displayname, _nameText.text);
         Destroy(gameObject);
     }
 

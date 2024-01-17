@@ -30,7 +30,7 @@ public class FriendManager : MonoBehaviour
     private TMP_InputField if_getFriend, if_unfriend;
 
     [SerializeField]
-    private FriendListDisplay _friendDisplayScript;
+    private FriendListDisplay _friendDisplayGrid, _requestDisplayGrid;
 
     public FriendIdType selectedFriendIdType = FriendIdType.Displayname;
 
@@ -44,7 +44,7 @@ public class FriendManager : MonoBehaviour
         Displayname
     }
 
-    public void GetFriends()
+    public void GetFriends(bool isPending)
     {
         PlayFabClientAPI.GetFriendsList(new GetFriendsListRequest
         {
@@ -54,7 +54,8 @@ public class FriendManager : MonoBehaviour
         result => 
         {
             _friendList = result.Friends;
-            DisplayFriends(_friendList); // Trigger UI
+            if (!isPending) DisplayFriends(_friendList); // Trigger UI
+            else DisplayRequests(_friendList);
         }, DisplayPlayFabError);
     }
     
@@ -93,21 +94,6 @@ public class FriendManager : MonoBehaviour
         OnUpdateSelectedFriendID.Invoke();
     }
 
-    public void AddFriendByDisplayName(string name)
-    {
-        var request = new AddFriendRequest
-        {
-            FriendTitleDisplayName = name
-        };
-
-        // Execute request and update friends when done
-        PlayFabClientAPI.AddFriend(request,
-        result =>
-        {
-            MessageBoxManager.Instance.DisplayMessage("Added " + name + "!");
-        }, DisplayPlayFabError);
-    }
-
     public void RemoveFriendByDisplayName(string name)
     {
         foreach (var f in _friendList)
@@ -120,32 +106,69 @@ public class FriendManager : MonoBehaviour
         }
     }
 
-    private void AddFriend(FriendIdType idType, string friendId)
+    public void AddFriend(FriendIdType idType, string friendId)
     {
-        var request = new AddFriendRequest();
+        // var request = new AddFriendRequest();
+        // switch (idType)
+        // {
+        //     case FriendIdType.PlayFabID:
+        //         request.FriendPlayFabId = friendId;
+        //         break;
+        //     case FriendIdType.Username:
+        //         request.FriendUsername = friendId;
+        //         break;
+        //     case FriendIdType.Email:
+        //         request.FriendEmail = friendId;
+        //         break;
+        //     case FriendIdType.Displayname:
+        //         request.FriendTitleDisplayName = friendId;
+        //         break;
+        // }
+
+        // // Execute request and update friends when done
+        // PlayFabClientAPI.AddFriend(request,
+        // result =>
+        // {
+        //     Debug.Log("Friend added successfully!");
+        //     MessageBoxManager.Instance.DisplayMessage("Added " + friendId + "!");
+        // }, DisplayPlayFabError);
+
+        var request = new GetAccountInfoRequest();
         switch (idType)
         {
             case FriendIdType.PlayFabID:
-                request.FriendPlayFabId = friendId;
+                request.PlayFabId = friendId;
                 break;
             case FriendIdType.Username:
-                request.FriendUsername = friendId;
+                request.Username = friendId;
                 break;
             case FriendIdType.Email:
-                request.FriendEmail = friendId;
+                request.Email = friendId;
                 break;
             case FriendIdType.Displayname:
-                request.FriendTitleDisplayName = friendId;
+                request.TitleDisplayName = friendId;
                 break;
         }
-
-        // Execute request and update friends when done
-        PlayFabClientAPI.AddFriend(request,
+        PlayFabClientAPI.GetAccountInfo(request,
         result =>
         {
-            Debug.Log("Friend added successfully!");
-            MessageBoxManager.Instance.DisplayMessage("Added " + friendId + "!");
+            var csrequest = new ExecuteCloudScriptRequest
+            {
+                FunctionName = "SendFriendRequest",
+                FunctionParameter = new
+                {
+                    FriendPlayFabId = result.AccountInfo.PlayFabId
+                }
+            };
+
+            PlayFabClientAPI.ExecuteCloudScript(csrequest,
+            result =>
+            {
+                MessageBoxManager.Instance.DisplayMessage("Sent request to " + friendId);
+            }, DisplayPlayFabError);
         }, DisplayPlayFabError);
+
+        
     }
 
     private void RemoveFriendByInfo(FriendInfo friendInfo)
@@ -172,20 +195,39 @@ public class FriendManager : MonoBehaviour
         {
             Debug.Log("Unfriended!");
             MessageBoxManager.Instance.DisplayMessage("Unfriended!");
-            GetFriends();
+            GetFriends(false);
         }, DisplayPlayFabError);
     }
 
     private void DisplayFriends(List<FriendInfo> friendsCache)
     {
-        _friendDisplayScript.ClearDisplay();
+        _friendDisplayGrid.ClearDisplay();
         friendsCache.ForEach(f =>
         {
-            Debug.Log("PlayfabID: " + f.FriendPlayFabId + " , display name: " + f.TitleDisplayName);
-            _friendDisplayScript.AddItem(f.TitleDisplayName);
-            if(f.Profile != null) Debug.Log(f.FriendPlayFabId + " / " + f.Profile.DisplayName);
+            if (f.Tags[0] != "requestee" && f.Tags[0] != "requester")
+            {
+                //Debug.Log("PlayfabID: " + f.FriendPlayFabId + " , display name: " + f.TitleDisplayName);
+                Debug.Log(f.Tags);
+                _friendDisplayGrid.AddItem(f.TitleDisplayName);
+            }
         });
-        _friendDisplayScript.DisplayFriendsList();
+        _friendDisplayGrid.DisplayFriendsList();
+    }
+    
+    private void DisplayRequests(List<FriendInfo> friendsCache)
+    {
+        Debug.Log("Displaying requests");
+        _requestDisplayGrid.ClearDisplay();
+        friendsCache.ForEach(f =>
+        {
+            if (f.Tags[0] == "requestee" || f.Tags[0] == "requester")
+            {
+                //Debug.Log("PlayfabID: " + f.FriendPlayFabId + " , display name: " + f.TitleDisplayName);
+                Debug.Log(f.Tags);
+                _requestDisplayGrid.AddItem(f.TitleDisplayName);
+            }
+        });
+        _requestDisplayGrid.DisplayFriendsList();
     }
 
     private void DisplayPlayFabError(PlayFabError error) 
