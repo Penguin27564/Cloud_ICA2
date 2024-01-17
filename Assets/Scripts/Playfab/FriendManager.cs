@@ -256,6 +256,7 @@ public class FriendManager : MonoBehaviour
 
     private void DisplayPlayFabError(PlayFabError error) 
     {
-         Debug.LogError(error.GenerateErrorReport()); 
+        Debug.LogError(error.GenerateErrorReport()); 
+        MessageBoxManager.Instance.DisplayMessage(error.GenerateErrorReport());
     }
 }

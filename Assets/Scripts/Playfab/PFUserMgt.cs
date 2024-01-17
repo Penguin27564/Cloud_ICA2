@@ -47,6 +47,21 @@ public class PFUserMgt : MonoBehaviour
         };
 
         PlayFabClientAPI.UpdateUserTitleDisplayName(req, OnDisplayNameUpdate, OnError);
+
+        // To enter user into the userlist
+        var request = new UpdatePlayerStatisticsRequest
+        {
+            Statistics = new List<StatisticUpdate>
+            {
+                new StatisticUpdate
+                {
+                    StatisticName = "Highscore",
+                    Value = 0
+                }
+            }
+        };
+        PlayFabClientAPI.UpdatePlayerStatistics(request, 
+        result => {}, OnError);
     }
 
     public void OnButtonLogin()
@@ -124,7 +139,6 @@ public class PFUserMgt : MonoBehaviour
 
     private void OnLoginSucc(LoginResult r)
     {
-        msgbox.text = "Login Success! " + r.PlayFabId;
         SceneManager.LoadScene(_nextScene);
     }
 }

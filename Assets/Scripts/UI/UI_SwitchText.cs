@@ -17,6 +17,7 @@ public class UI_SwitchText : MonoBehaviour
     private void Awake()
     {
         if (!_textToSwitch) _textToSwitch = GetComponent<TMP_Text>();
+        Debug.Log(gameObject.name);
         _textToSwitch.text = _defaultText;
     }
 }

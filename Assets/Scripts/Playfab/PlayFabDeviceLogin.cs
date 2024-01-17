@@ -4,6 +4,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine.SceneManagement;
 using System;
+using System.Collections.Generic;
 
 public class PlayFabDeviceLogin : MonoBehaviour
 {
@@ -56,6 +57,21 @@ public class PlayFabDeviceLogin : MonoBehaviour
             };
 
             PlayFabClientAPI.UpdateUserTitleDisplayName(nameReq, OnDeviceNameUpdateSucc, OnError);
+
+            // To enter user into the userlist
+            var request = new UpdatePlayerStatisticsRequest
+            {
+                Statistics = new List<StatisticUpdate>
+                {
+                    new StatisticUpdate
+                    {
+                        StatisticName = "Highscore",
+                        Value = 0
+                    }
+                }
+            };
+            PlayFabClientAPI.UpdatePlayerStatistics(request, 
+            result => {}, OnError);
         }
         SceneManager.LoadScene(_nextScene);
     }
