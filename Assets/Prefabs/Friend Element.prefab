@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9056612364650602058}
   - component: {fileID: 5757897480520699982}
   - component: {fileID: 8846314270543536233}
+  - component: {fileID: 6698588478301137519}
   m_Layer: 5
   m_Name: Remove Button
   m_TagString: Untagged
@@ -133,6 +134,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6698588478301137519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324503854984450129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee7522123124769488ed8fae62159234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: 
+  content: Remove friend
+  showDelay: 1
 --- !u!1 &2133573067295884667
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,6 +161,7 @@ GameObject:
   - component: {fileID: 4165773514390224495}
   - component: {fileID: 8218416933269194423}
   - component: {fileID: 2629871805212387935}
+  - component: {fileID: 7075836233035681883}
   m_Layer: 5
   m_Name: Trade button
   m_TagString: Untagged
@@ -254,6 +271,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7075836233035681883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133573067295884667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee7522123124769488ed8fae62159234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: 
+  content: Begin trading
+  showDelay: 1
 --- !u!1 &3773516045124551588
 GameObject:
   m_ObjectHideFlags: 0
