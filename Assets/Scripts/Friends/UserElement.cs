@@ -6,10 +6,12 @@ public class UserElement : MonoBehaviour
     private TMP_Text _nameText;
 
     private RectTransform _rectTransform;
+    public string playFabID;
 
-    public void SetName(string name)
+    public void SetName(string name, string PlayFabID)
     {
         _nameText.text = name;
+        playFabID = PlayFabID;
     }
 
     public void AddFriend()

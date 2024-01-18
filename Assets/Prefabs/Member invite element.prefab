@@ -421,6 +421,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseColor: {r: 0, g: 0.8352942, b: 0.8352942, a: 1}
   _invitedColor: {r: 1, g: 0.82745105, b: 0.21960786, a: 1}
+  username: {fileID: 793856513385842620}
+  inviteOnCreate: 0
 --- !u!1 &8525040211175860381
 GameObject:
   m_ObjectHideFlags: 0

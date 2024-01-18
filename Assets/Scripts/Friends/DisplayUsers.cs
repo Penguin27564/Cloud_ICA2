@@ -19,10 +19,10 @@ public class DisplayUsers : MonoBehaviour
     private bool _addUser = false;
     private RectTransform _rectTransform;
 
-    public void AddItem(string name)
+    public void AddItem(string name, string PlayfabID)
     {
         UserElement newElement = Instantiate(_userElement);
-        newElement.SetName(name);
+        newElement.SetName(name, PlayfabID);
         newElement.transform.SetParent(transform);
         newElement.transform.localScale = Vector3.one;
         _elementsToAdd.Add(newElement.gameObject);
@@ -78,19 +78,19 @@ public class DisplayUsers : MonoBehaviour
     {
         ClearDisplay();
 
-        PlayFabClientAPI.GetFriendsList(new GetFriendsListRequest
+        if (_ignoreFriends)
         {
-            //ExternalPlatformFriends = false,
-            //XboxToken = null,
-        },
-        result => 
-        {
-            _friendList = result.Friends;
-            foreach (var element in r.Leaderboard)
+            PlayFabClientAPI.GetFriendsList(new GetFriendsListRequest
             {
-                _addUser = true;
-                if (_ignoreFriends)
+                //ExternalPlatformFriends = false,
+                //XboxToken = null,
+            },
+            result => 
+            {
+                _friendList = result.Friends;
+                foreach (var element in r.Leaderboard)
                 {
+                    _addUser = true;
                     foreach (var friend in _friendList)
                     {
                         if (friend.FriendPlayFabId == element.PlayFabId)
@@ -98,12 +98,20 @@ public class DisplayUsers : MonoBehaviour
                             _addUser = false;
                         }
                     }
+                    if (_addUser) AddItem(element.DisplayName, element.PlayFabId);
                 }
-                if (_addUser) AddItem(element.DisplayName);
+                
+                DisplayUserList();
+            }, DisplayPlayFabError);
+        }
+        else
+        {
+            foreach (var element in r.Leaderboard)
+            {
+                AddItem(element.DisplayName, element.PlayFabId);
             }
-            
             DisplayUserList();
-        }, DisplayPlayFabError);
+        }
     }
 
     private void OnError(PlayFabError e)

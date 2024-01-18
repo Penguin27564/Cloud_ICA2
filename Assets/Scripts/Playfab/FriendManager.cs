@@ -5,7 +5,6 @@ using PlayFab;
 using PlayFab.ClientModels;
 using TMPro;
 using System;
-using System.Reflection;
 
 public class FriendManager : MonoBehaviour
 {
@@ -109,31 +108,48 @@ public class FriendManager : MonoBehaviour
 
     public void AddFriend(FriendIdType idType, string friendId)
     {
-        var request = new GetAccountInfoRequest();
-        switch (idType)
+        if (idType != FriendIdType.PlayFabID)
         {
-            case FriendIdType.PlayFabID:
-                request.PlayFabId = friendId;
-                break;
-            case FriendIdType.Username:
-                request.Username = friendId;
-                break;
-            case FriendIdType.Email:
-                request.Email = friendId;
-                break;
-            case FriendIdType.Displayname:
-                request.TitleDisplayName = friendId;
-                break;
+            var request = new GetAccountInfoRequest();
+            switch (idType)
+            {
+                case FriendIdType.Username:
+                    request.Username = friendId;
+                    break;
+                case FriendIdType.Email:
+                    request.Email = friendId;
+                    break;
+                case FriendIdType.Displayname:
+                    request.TitleDisplayName = friendId;
+                    break;
+            }
+            PlayFabClientAPI.GetAccountInfo(request,
+            result =>
+            {
+                var csrequest = new ExecuteCloudScriptRequest
+                {
+                    FunctionName = "SendFriendRequest",
+                    FunctionParameter = new
+                    {
+                        FriendPlayFabId = result.AccountInfo.PlayFabId
+                    }
+                };
+
+                PlayFabClientAPI.ExecuteCloudScript(csrequest,
+                result =>
+                {
+                    MessageBoxManager.Instance.DisplayMessage("Sent request to " + friendId);
+                }, DisplayPlayFabError);
+            }, DisplayPlayFabError);
         }
-        PlayFabClientAPI.GetAccountInfo(request,
-        result =>
+        else
         {
             var csrequest = new ExecuteCloudScriptRequest
             {
                 FunctionName = "SendFriendRequest",
                 FunctionParameter = new
                 {
-                    FriendPlayFabId = result.AccountInfo.PlayFabId
+                    FriendPlayFabId = friendId
                 }
             };
 
@@ -142,9 +158,7 @@ public class FriendManager : MonoBehaviour
             {
                 MessageBoxManager.Instance.DisplayMessage("Sent request to " + friendId);
             }, DisplayPlayFabError);
-        }, DisplayPlayFabError);
-
-        
+        }
     }
 
     public void AcceptFriendRequest(string name)
