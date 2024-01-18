@@ -24724,6 +24724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _noUsersText: {fileID: 555725045}
+  _guildName: {fileID: 551481925}
   _memberElement: {fileID: 4586634178128275884, guid: 855e14827dbbbee43876b662cf0ecf90, type: 3}
 --- !u!4 &4124165426062688 stripped
 Transform:

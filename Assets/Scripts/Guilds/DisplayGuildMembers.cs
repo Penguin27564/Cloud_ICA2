@@ -5,11 +5,15 @@ using PlayFab.ClientModels;
 using PlayFab.GroupsModels;
 using PlayFab.Json;
 using EntityKey = PlayFab.GroupsModels.EntityKey;
+using TMPro;
 
 public class DisplayGuildMembers : MonoBehaviour
 {
     [SerializeField]
     private GameObject _noUsersText;
+
+    [SerializeField]
+    private TMP_Text _guildName;
 
     [SerializeField]
     private UserElement _memberElement;
@@ -62,6 +66,7 @@ public class DisplayGuildMembers : MonoBehaviour
         },
         result =>
         {
+            _guildName.text = result.Groups[0].GroupName;
             GetMembers(result.Groups[0].Group);
         },
         error =>
