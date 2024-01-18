@@ -8,6 +8,12 @@ public class DisplayUsers : MonoBehaviour
     [SerializeField]
     private UserElement _userElement;
 
+    [SerializeField]
+    private bool _horizontalDisplay = false;
+
+    [SerializeField]
+    private bool _ignoreFriends = false;
+
     private List<GameObject> _elementsToAdd = new();
     private List<FriendInfo> _friendList = new();
     private bool _addUser = false;
@@ -29,7 +35,16 @@ public class DisplayUsers : MonoBehaviour
         {
             element.SetActive(true);
         }
-        Vector2 contentSize = new(220 * transform.childCount, _rectTransform.sizeDelta.y);
+
+        Vector2 contentSize;
+        if (_horizontalDisplay) 
+        {
+            contentSize = new(220 * transform.childCount, _rectTransform.sizeDelta.y);
+        }
+        else
+        {
+            contentSize = new(_rectTransform.sizeDelta.x, 110 * transform.childCount);
+        }
         _rectTransform.sizeDelta = contentSize;
     }
 
@@ -74,11 +89,14 @@ public class DisplayUsers : MonoBehaviour
             foreach (var element in r.Leaderboard)
             {
                 _addUser = true;
-                foreach (var friend in _friendList)
+                if (_ignoreFriends)
                 {
-                    if (friend.FriendPlayFabId == element.PlayFabId)
+                    foreach (var friend in _friendList)
                     {
-                        _addUser = false;
+                        if (friend.FriendPlayFabId == element.PlayFabId)
+                        {
+                            _addUser = false;
+                        }
                     }
                 }
                 if (_addUser) AddItem(element.DisplayName);
