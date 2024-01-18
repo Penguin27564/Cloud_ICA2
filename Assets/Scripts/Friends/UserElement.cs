@@ -8,7 +8,7 @@ public class UserElement : MonoBehaviour
     private RectTransform _rectTransform;
     public string playFabID;
 
-    public void SetName(string name, string PlayFabID)
+    public void SetName(string name, string PlayFabID = "")
     {
         _nameText.text = name;
         playFabID = PlayFabID;

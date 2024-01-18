@@ -9,6 +9,9 @@ using EntityKey = PlayFab.GroupsModels.EntityKey;
 public class DisplayGuildMembers : MonoBehaviour
 {
     [SerializeField]
+    private GameObject _noUsersText;
+
+    [SerializeField]
     private UserElement _memberElement;
 
     private bool _isAdmin = false;
@@ -18,7 +21,7 @@ public class DisplayGuildMembers : MonoBehaviour
     public void AddItem(string name)
     {
         UserElement newElement = Instantiate(_memberElement);
-        //newElement.SetName(name);
+        newElement.SetName(name);
         newElement.transform.SetParent(transform);
         newElement.transform.localScale = Vector3.one;
         _elementsToAdd.Add(newElement.gameObject);
@@ -27,6 +30,7 @@ public class DisplayGuildMembers : MonoBehaviour
 
     public void DisplayMembers()
     {
+        _noUsersText.SetActive(!(transform.childCount > 0));
         foreach (var element in _elementsToAdd)
         {
             element.SetActive(true);
@@ -53,7 +57,6 @@ public class DisplayGuildMembers : MonoBehaviour
 
     private void GetGroup()
     {
-        Debug.Log("Getting group");
         PlayFabGroupsAPI.ListMembership(new ListMembershipRequest
         {
         },
@@ -69,7 +72,6 @@ public class DisplayGuildMembers : MonoBehaviour
 
     private void GetMembers(EntityKey groupID)
     {
-        Debug.Log("Getting members");
         PlayFabGroupsAPI.ListGroupMembers(new ListGroupMembersRequest
         {
             Group = groupID
@@ -95,7 +97,6 @@ public class DisplayGuildMembers : MonoBehaviour
 
     private void GetMemberDisplayNames(List<string> memberIDs)
     {
-        Debug.Log("MemebrIDs: " + memberIDs.Count);
         var csrequest = new ExecuteCloudScriptRequest
         {
             FunctionName = "GetDisplayNamesFromID",
@@ -108,14 +109,16 @@ public class DisplayGuildMembers : MonoBehaviour
         PlayFabClientAPI.ExecuteCloudScript(csrequest,
         result =>
         {
-            //JsonObject jsonResult = (JsonObject)result.FunctionResult;
-            Debug.Log(result.FunctionResult.ToString());
-            //Debug.Log(jsonResult);
+            Dictionary<string, List<string>> dic = 
+                PlayFabSimpleJson.DeserializeObject<Dictionary<string, List<string>>>(result.FunctionResult.ToString());
 
-            //if (jsonResult.TryGetValue("Result", out object value))
+            if (dic.TryGetValue("Result", out List<string> value))
             {
-                // Turn back into list and add users here
-                //Debug.Log(value.ToString());
+                foreach (var name in value)
+                {
+                    AddItem(name);
+                }
+                DisplayMembers();
             }
         },
         error =>
