@@ -98,7 +98,10 @@ public class DisplayUsers : MonoBehaviour
                             _addUser = false;
                         }
                     }
-                    if (_addUser) AddItem(element.DisplayName, element.PlayFabId);
+                    if (_addUser && element.PlayFabId != PFDataMgr.Instance.currentPlayerPlayFabID)
+                    {
+                        AddItem(element.DisplayName, element.PlayFabId);
+                    }
                 }
                 
                 DisplayUserList();
@@ -108,7 +111,10 @@ public class DisplayUsers : MonoBehaviour
         {
             foreach (var element in r.Leaderboard)
             {
-                AddItem(element.DisplayName, element.PlayFabId);
+                if (element.PlayFabId != PFDataMgr.Instance.currentPlayerPlayFabID)
+                {
+                    AddItem(element.DisplayName, element.PlayFabId);
+                }
             }
             DisplayUserList();
         }
