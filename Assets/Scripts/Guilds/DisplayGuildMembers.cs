@@ -10,7 +10,7 @@ using TMPro;
 public class DisplayGuildMembers : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _noUsersText;
+    private GameObject _noUsersText, _adminUI;
 
     [SerializeField]
     private TMP_Text _guildName;
@@ -68,6 +68,7 @@ public class DisplayGuildMembers : MonoBehaviour
         {
             _guildName.text = result.Groups[0].GroupName;
             _isAdmin = result.Groups[0].Roles[0].RoleName == "Administrators";
+            _adminUI.SetActive(_isAdmin);
             GetMembers(result.Groups[0].Group);
         },
         error =>
@@ -95,7 +96,6 @@ public class DisplayGuildMembers : MonoBehaviour
                     }
                 }
             }
-
             GetMemberDisplayNames(memberIDs);
         },
         error =>

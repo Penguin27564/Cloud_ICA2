@@ -128,10 +128,10 @@ public class GuildManager : MonoBehaviour
         EntityGroupPairs.Add(new KeyValuePair<string, string>(prevRequest.Entity.Id, prevRequest.Group.Id));
     }
 
-    public void ApplyToGroup(string groupId, EntityKey entityKey)
+    public void ApplyToGroup(string groupId)
     {
         // A player-controlled entity applies to join an existing group (of which they are not already a member)
-        var request = new ApplyToGroupRequest { Group = EntityKeyMaker(groupId), Entity = entityKey };
+        var request = new ApplyToGroupRequest { Group = EntityKeyMaker(groupId) };
         PlayFabGroupsAPI.ApplyToGroup(request, OnApply, OnSharedError);
     }
     public void OnApply(ApplyToGroupResponse response)
@@ -141,6 +141,10 @@ public class GuildManager : MonoBehaviour
         // Presumably, this would be part of a separate process where the recipient reviews and accepts the request
         var request = new AcceptGroupApplicationRequest { Group = prevRequest.Group, Entity = prevRequest.Entity };
         PlayFabGroupsAPI.AcceptGroupApplication(request, OnAcceptApplication, OnSharedError);
+    }
+    public void AcceptApplication()
+    {
+        
     }
     public void OnAcceptApplication(EmptyResponse response)
     {

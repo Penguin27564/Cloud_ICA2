@@ -6,6 +6,8 @@ public class UserElement : MonoBehaviour
     private TMP_Text _nameText;
 
     private RectTransform _rectTransform;
+
+    [HideInInspector]
     public string playFabID;
 
     public void SetName(string name, string PlayFabID = "")
