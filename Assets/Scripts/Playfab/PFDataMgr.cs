@@ -7,11 +7,26 @@ using System;
 
 public class PFDataMgr : MonoBehaviour
 {
-    public static PFDataMgr Instance;
+    private static PFDataMgr _instance;
+
+    public static PFDataMgr Instance
+    {
+        get
+        {
+            if (_instance == null) _instance = new PFDataMgr();
+            return _instance;
+        }
+    }
+
+    public PFDataMgr()
+    {
+        _instance = this;
+    }
 
     public int playerMaxHealth;
     
     public float playerSpeed, playerFireRate;
+    public string currentPlayerDisplayName, currentPlayerPlayFabID;
 
 
     [SerializeField]
@@ -169,11 +184,26 @@ public class PFDataMgr : MonoBehaviour
         );
     }
 
+    public void GetUserInfo()
+    {
+        PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest()
+        {
+        },
+        result =>
+        {
+            currentPlayerPlayFabID = result.AccountInfo.PlayFabId;
+            currentPlayerDisplayName = result.AccountInfo.TitleInfo.DisplayName;
+        },
+        error =>
+        {
+            Debug.LogError("Error retrieving user info: ");
+        });
+    }
+
     private void Awake()
     {
-        if (!Instance) Instance = this;
         GetUserData();
-        Debug.Log("PLAYER STATS: GETTING PLAYER STATS");
+        GetUserInfo();
     }
 
     private void UpdateUI()

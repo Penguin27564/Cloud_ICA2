@@ -16,15 +16,15 @@ public class DisplayGuildMembers : MonoBehaviour
     private TMP_Text _guildName;
 
     [SerializeField]
-    private UserElement _memberElement;
+    private UserElement _memberElement, _adminMemberElement;
 
-    private bool _isAdmin = false;
+    private bool _isAdmin = true;
     private List<GameObject> _elementsToAdd = new();
     private RectTransform _rectTransform;
 
     public void AddItem(string name)
     {
-        UserElement newElement = Instantiate(_memberElement);
+        UserElement newElement = Instantiate(_isAdmin ? _adminMemberElement : _memberElement);
         newElement.SetName(name);
         newElement.transform.SetParent(transform);
         newElement.transform.localScale = Vector3.one;
@@ -67,6 +67,7 @@ public class DisplayGuildMembers : MonoBehaviour
         result =>
         {
             _guildName.text = result.Groups[0].GroupName;
+            _isAdmin = result.Groups[0].Roles[0].RoleName == "Administrators";
             GetMembers(result.Groups[0].Group);
         },
         error =>
@@ -88,7 +89,10 @@ public class DisplayGuildMembers : MonoBehaviour
             {
                 foreach (var player in role.Members)
                 {
-                    memberIDs.Add(player.Lineage["master_player_account"].Id);
+                    if (player.Lineage["master_player_account"].Id != PFDataMgr.Instance.currentPlayerPlayFabID)
+                    {
+                        memberIDs.Add(player.Lineage["master_player_account"].Id);
+                    }
                 }
             }
 
