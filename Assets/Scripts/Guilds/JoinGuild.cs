@@ -20,6 +20,7 @@ public class JoinGuild : MonoBehaviour
         result =>
         {
             GuildManager.Instance.ApplyToGroup(result.Group.Id);
+            MessageBoxManager.Instance.DisplayMessage("Applied to " + if_guildName.text + "!");
         },
         error =>
         {
