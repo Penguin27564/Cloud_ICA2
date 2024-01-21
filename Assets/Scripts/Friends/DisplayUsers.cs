@@ -9,10 +9,7 @@ public class DisplayUsers : MonoBehaviour
     private UserElement _userElement;
 
     [SerializeField]
-    private bool _horizontalDisplay = false;
-
-    [SerializeField]
-    private bool _ignoreFriends = false;
+    private bool _horizontalDisplay, _ignoreFriends, _ignoreGuild = false;
 
     private List<GameObject> _elementsToAdd = new();
     private List<FriendInfo> _friendList = new();
@@ -106,6 +103,25 @@ public class DisplayUsers : MonoBehaviour
                 
                 DisplayUserList();
             }, DisplayPlayFabError);
+        }
+        else if (_ignoreGuild)
+        {
+            foreach (var element in r.Leaderboard)
+            {
+                _addUser = true;
+                foreach (var member in GuildManager.Instance.currentGuildMembers)
+                {
+                    if (element.PlayFabId == member.playFabID)
+                    {
+                        _addUser = false;
+                    }
+                }
+                if (_addUser && element.PlayFabId != PFDataMgr.Instance.currentPlayerPlayFabID)
+                {
+                    AddItem(element.DisplayName, element.PlayFabId);
+                }
+            }
+            DisplayUserList();
         }
         else
         {

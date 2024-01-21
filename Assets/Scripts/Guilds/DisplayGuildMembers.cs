@@ -20,7 +20,7 @@ public class DisplayGuildMembers : MonoBehaviour
     private UserElement _memberElement, _adminMemberElement;
 
     private bool _isAdmin = true;
-    private List<GameObject> _elementsToAdd = new();
+    //private List<GameObject> _elementsToAdd = new();
     private RectTransform _rectTransform;
 
     public void AddItem(string name, string playfabID, EntityKey entityKey)
@@ -29,16 +29,18 @@ public class DisplayGuildMembers : MonoBehaviour
         newElement.SetName(name, playfabID, entityKey);
         newElement.transform.SetParent(transform);
         newElement.transform.localScale = Vector3.one;
-        _elementsToAdd.Add(newElement.gameObject);
+
+        GuildManager.Instance.currentGuildMembers.Add(newElement);
+        
         newElement.gameObject.SetActive(false);
     }
 
     public void DisplayMembers()
     {
         _noUsersText.SetActive(!(transform.childCount > 0));
-        foreach (var element in _elementsToAdd)
+        foreach (var element in GuildManager.Instance.currentGuildMembers)
         {
-            element.SetActive(true);
+            element.gameObject.SetActive(true);
         }
 
         Vector2 contentSize = new(220 * transform.childCount, _rectTransform.sizeDelta.y);
@@ -55,7 +57,7 @@ public class DisplayGuildMembers : MonoBehaviour
 
     private void OnEnable()
     {
-        _elementsToAdd.Clear();
+        GuildManager.Instance.currentGuildMembers.Clear();
         ClearDisplay();
         GetGroup();
     }

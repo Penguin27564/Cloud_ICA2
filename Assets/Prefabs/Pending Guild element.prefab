@@ -121,7 +121,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6566806338087928375}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8067215399205610409}
+        m_TargetAssemblyTypeName: GuildInvitationElement, Assembly-CSharp
+        m_MethodName: Reject
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4420266324452492581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,7 +147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   header: 
-  content: Reject friend request
+  content: Reject invite
   showDelay: 1
 --- !u!1 &2348603066194629085
 GameObject:
@@ -393,7 +405,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6710613412638935409}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8067215399205610409}
+        m_TargetAssemblyTypeName: GuildInvitationElement, Assembly-CSharp
+        m_MethodName: Accept
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4044038345419531812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -407,7 +431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   header: 
-  content: Accept friend request
+  content: Accept invite
   showDelay: 1
 --- !u!1 &5904116613457171129
 GameObject:
@@ -420,7 +444,7 @@ GameObject:
   - component: {fileID: 118569025946069154}
   - component: {fileID: 5473777872307833077}
   - component: {fileID: 6191768123734067131}
-  - component: {fileID: 7736851971101444882}
+  - component: {fileID: 8067215399205610409}
   m_Layer: 5
   m_Name: Pending Guild element
   m_TagString: Untagged
@@ -489,7 +513,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7736851971101444882
+--- !u!114 &8067215399205610409
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -498,7 +522,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5904116613457171129}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 031e7181c8023bb46ae8974f45f07b02, type: 3}
+  m_Script: {fileID: 11500000, guid: f5cf592978c4ae348a76121c6f0ceb15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nameText: {fileID: 4497588126404879908}
+  _groupName: {fileID: 4497588126404879908}
+  _groupKey:
+    Id: 
+    Type: 

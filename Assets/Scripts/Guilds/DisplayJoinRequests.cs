@@ -7,7 +7,6 @@ using PlayFab.ProfilesModels;
 using PlayFab.Json;
 using TMPro;
 using EntityKey = PlayFab.GroupsModels.EntityKey;
-using UnityEditor.VersionControl;
 
 public class DisplayJoinRequests : MonoBehaviour
 {
@@ -51,19 +50,7 @@ public class DisplayJoinRequests : MonoBehaviour
     private void OnEnable()
     {
         ClearDisplay();
-        PlayFabGroupsAPI.GetGroup(new GetGroupRequest()
-        {
-            GroupName = _currentGuildName.text
-        },
-        result =>
-        {
-            GuildManager.Instance.currentGroupKey = result.Group;
-            GetApplications(result.Group);
-        },
-        error =>
-        {
-            Debug.Log(error.GenerateErrorReport());
-        });
+        GetApplications(GuildManager.Instance.currentGroupKey);
     }
 
     private void GetApplications(EntityKey groupKey)

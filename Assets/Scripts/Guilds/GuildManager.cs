@@ -31,6 +31,7 @@ public class GuildManager : MonoBehaviour
     public readonly HashSet<KeyValuePair<string, string>> EntityGroupPairs = new HashSet<KeyValuePair<string, string>>();
     public readonly Dictionary<string, string> GroupNameById = new Dictionary<string, string>();
     public EntityKey currentGroupKey;
+    public List<UserElement> currentGuildMembers = new();
 
     public Action OnMemberRemoved;
 
