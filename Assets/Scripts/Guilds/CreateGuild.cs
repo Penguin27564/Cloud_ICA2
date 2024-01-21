@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using PlayFab.ClientModels;
+using PlayFab.GroupsModels;
 using PlayFab;
 
 public class CreateGuild : MonoBehaviour
@@ -21,13 +22,27 @@ public class CreateGuild : MonoBehaviour
     {
         if(!VerifyGuildName()) return;
 
-        List<string> initialMemberList = new();
+        List<PlayFab.GroupsModels.EntityKey> initialMemberList = new();
+
+        var jsonConverter = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
 
         foreach (var user in _userList)
         {
             if (user.inviteOnCreate)
             {
-                initialMemberList.Add(user.GetComponent<UserElement>().playFabID);
+                PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest()
+                {
+                    PlayFabId = user.GetComponent<UserElement>().playFabID
+                },
+                result =>
+                {
+                    initialMemberList.Add(jsonConverter.DeserializeObject<PlayFab.GroupsModels.EntityKey>
+                                        (jsonConverter.SerializeObject(result.AccountInfo.TitleInfo.TitlePlayerAccount)));
+                },
+                error =>
+                {
+                    Debug.LogError(error.GenerateErrorReport());
+                });
             } 
         }
         
@@ -36,37 +51,28 @@ public class CreateGuild : MonoBehaviour
 
     public void InviteMembers()
     {
-        List<string> memberInviteList = new();
+        var jsonConverter = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
 
         foreach (var user in _userList)
         {
             if (user.inviteOnCreate)
             {
-                memberInviteList.Add(user.GetComponent<UserElement>().playFabID);
-            } 
-        }
-
-        var csrequest = new ExecuteCloudScriptRequest
+                PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest()
                 {
-                    FunctionName = "AddMembersToGroup",
-                    FunctionParameter = new
-                    {
-                        GroupId = GuildManager.Instance.currentGroupKey,
-                        MemberIDs = memberInviteList
-                    }
-                };
-
-                PlayFabClientAPI.ExecuteCloudScript(csrequest,
+                    PlayFabId = user.GetComponent<UserElement>().playFabID
+                },
                 result =>
-                {   
-                    MessageBoxManager.Instance.DisplayMessage("Added members!");
-                    Debug.Log("Added members!");
-                }, 
+                {
+                    GuildManager.Instance.InviteMember(jsonConverter.DeserializeObject<PlayFab.GroupsModels.EntityKey>
+                                        (jsonConverter.SerializeObject(result.AccountInfo.TitleInfo.TitlePlayerAccount)));
+                },
                 error =>
                 {
-                    Debug.Log(error.GenerateErrorReport());
-                    MessageBoxManager.Instance.DisplayMessage("Error adding members");
+                    Debug.LogError(error.GenerateErrorReport());
                 });
+                
+            } 
+        }
     }
 
     private void Start()

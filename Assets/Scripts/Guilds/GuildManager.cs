@@ -61,7 +61,7 @@ public class GuildManager : MonoBehaviour
         }
     }
 
-    public void CreateGroup(string groupName, List<string> initialMembers)
+    public void CreateGroup(string groupName, List<EntityKey> initialMembers)
     {
         // A player-controlled entity creates a new group
         var request = new CreateGroupRequest { GroupName = groupName };
@@ -109,6 +109,14 @@ public class GuildManager : MonoBehaviour
                 temp.Add(each);
         EntityGroupPairs.IntersectWith(temp);
         GroupNameById.Remove(prevRequest.Group.Id);
+    }
+    public void InviteMember(EntityKey userKey)
+    {
+        var request = new InviteToGroupRequest { Group = currentGroupKey, Entity = userKey};
+        PlayFabGroupsAPI.InviteToGroup(request,
+        result =>
+        {
+        }, OnSharedError);
     }
     public void AcceptInvite(EntityKey groupKey)
     {
