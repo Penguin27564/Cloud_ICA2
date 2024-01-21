@@ -7,6 +7,7 @@ using PlayFab.ProfilesModels;
 using PlayFab.Json;
 using TMPro;
 using EntityKey = PlayFab.GroupsModels.EntityKey;
+using UnityEditor.VersionControl;
 
 public class DisplayJoinRequests : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class DisplayJoinRequests : MonoBehaviour
 
     [SerializeField]
     private UserElement _userElement;
+
+    [SerializeField]
+    private List<GameObject> _UIToDisable;
 
     private RectTransform _rectTransform;
     private Dictionary<UserElement, EntityKey> _applicantList = new();
@@ -27,8 +31,14 @@ public class DisplayJoinRequests : MonoBehaviour
             if (applicant.Key.displayName == applicantDisplayName)
             {
                 GuildManager.Instance.AcceptApplication(_groupKey, applicant.Value);
+                foreach (var ui in _UIToDisable)
+                {
+                    ui.SetActive(false);
+                }
+                return;
             }
         }
+        MessageBoxManager.Instance.DisplayMessage("Error when accepting application");
     }
     private void OnEnable()
     {
