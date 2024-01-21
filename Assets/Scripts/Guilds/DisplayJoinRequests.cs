@@ -17,9 +17,6 @@ public class DisplayJoinRequests : MonoBehaviour
     [SerializeField]
     private UserElement _userElement;
 
-    [SerializeField]
-    private List<GameObject> _UIToDisable;
-
     private RectTransform _rectTransform;
     private Dictionary<UserElement, EntityKey> _applicantList = new();
     private EntityKey _groupKey;
@@ -31,15 +28,27 @@ public class DisplayJoinRequests : MonoBehaviour
             if (applicant.Key.displayName == applicantDisplayName)
             {
                 GuildManager.Instance.AcceptApplication(_groupKey, applicant.Value);
-                foreach (var ui in _UIToDisable)
-                {
-                    ui.SetActive(false);
-                }
+                OnEnable();
                 return;
             }
         }
         MessageBoxManager.Instance.DisplayMessage("Error when accepting application");
     }
+
+    public void RejectApplication(string applicantDisplayName)
+    {
+        foreach (var applicant in _applicantList)
+        {
+            if (applicant.Key.displayName == applicantDisplayName)
+            {
+                GuildManager.Instance.RejectApplication(_groupKey, applicant.Value);
+                OnEnable();
+                return;
+            }
+        }
+        MessageBoxManager.Instance.DisplayMessage("Error when rejecting application");
+    }
+
     private void OnEnable()
     {
         ClearDisplay();

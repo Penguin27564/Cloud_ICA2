@@ -146,6 +146,21 @@ public class GuildManager : MonoBehaviour
     {
         var prevRequest = (AcceptGroupApplicationRequest)response.Request;
         Debug.Log("Entity Added to Group: " + prevRequest.Entity.Id + " to " + prevRequest.Group.Id);
+        
+        MessageBoxManager.Instance.DisplayMessage("Accepted application!");
+    }
+    public void RejectApplication(EntityKey groupKey, EntityKey applicantKey)
+    {
+        var request = new RemoveGroupApplicationRequest { Group = groupKey, Entity = applicantKey};
+        PlayFabGroupsAPI.RemoveGroupApplication(request,
+        result =>
+        {
+            MessageBoxManager.Instance.DisplayMessage("Rejected application");
+        },
+        error =>
+        {
+            MessageBoxManager.Instance.DisplayMessage("Error rejecting application");
+        });
     }
     public void KickMember(string groupId, EntityKey entityKey)
     {
@@ -159,4 +174,5 @@ public class GuildManager : MonoBehaviour
         Debug.Log("Entity kicked from Group: " + prevRequest.Members[0].Id + " to " + prevRequest.Group.Id);
         EntityGroupPairs.Remove(new KeyValuePair<string, string>(prevRequest.Members[0].Id, prevRequest.Group.Id));
     }
+
 }

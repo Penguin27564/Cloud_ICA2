@@ -4044,6 +4044,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9036245849255442577, guid: 3059455647c3d7041a05b2e115b8c8e5, type: 3}
+      propertyPath: content
+      value: Reject
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3059455647c3d7041a05b2e115b8c8e5, type: 3}
 --- !u!1 &359766354
@@ -20776,9 +20780,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentGuildName: {fileID: 551481925}
   _userElement: {fileID: 2524261434763477758, guid: 3059455647c3d7041a05b2e115b8c8e5, type: 3}
-  _UIToDisable:
-  - {fileID: 1311415883}
-  - {fileID: 755035830}
 --- !u!1 &1579066906
 GameObject:
   m_ObjectHideFlags: 0

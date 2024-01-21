@@ -28,6 +28,11 @@ public class UserElement : MonoBehaviour
         GetComponentInParent<DisplayJoinRequests>().AcceptApplication(displayName);
     }
 
+    public void RejectFromGuild()
+    {
+        GetComponentInParent<DisplayJoinRequests>().RejectApplication(displayName);
+    }
+
     private void Awake()
     {
         _nameText = GetComponentInChildren<TMP_Text>();
