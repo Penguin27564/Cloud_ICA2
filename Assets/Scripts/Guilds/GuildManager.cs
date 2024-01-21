@@ -189,5 +189,27 @@ public class GuildManager : MonoBehaviour
             Debug.LogError(error.GenerateErrorReport());
         });
     }
+    public void LeaveGroup()
+    {
+        var request = new RemoveMembersRequest
+        { 
+            Group = currentGroupKey,
+            Members = new List<EntityKey>{PFDataMgr.Instance.currentPlayEntityKey} 
+        };
+
+        PlayFabGroupsAPI.RemoveMembers(request, 
+        result =>
+        {
+            Debug.Log("Left guild");
+            MessageBoxManager.Instance.DisplayMessage("Left guild");
+            EntityGroupPairs.Remove(new KeyValuePair<string, string>(request.Members[0].Id, request.Group.Id));
+            OnMemberRemoved.Invoke();
+        }, 
+        error =>
+        {
+            MessageBoxManager.Instance.DisplayMessage("Error removing member");
+            Debug.LogError(error.GenerateErrorReport());
+        });
+    }
 
 }
