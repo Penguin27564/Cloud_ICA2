@@ -242,6 +242,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playFabID: 
+  displayName: 
+  entityKey:
+    Id: 
+    Type: 
 --- !u!1 &6136017584242836376
 GameObject:
   m_ObjectHideFlags: 0
@@ -501,7 +505,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 664118442917340899}
         m_TargetAssemblyTypeName: UserElement, Assembly-CSharp
-        m_MethodName: AddFriend
+        m_MethodName: RemoveMember
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

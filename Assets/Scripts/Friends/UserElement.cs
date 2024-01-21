@@ -1,3 +1,4 @@
+using PlayFab.GroupsModels;
 using TMPro;
 using UnityEngine;
 
@@ -9,12 +10,16 @@ public class UserElement : MonoBehaviour
 
     [HideInInspector]
     public string playFabID, displayName;
+    
+    [HideInInspector]
+    public EntityKey entityKey;
 
-    public void SetName(string name, string PlayFabID = "")
+    public void SetName(string name, string PlayFabID = "", EntityKey userKey = null)
     {
         _nameText.text = name;
         playFabID = PlayFabID;
         displayName = name;
+        entityKey = userKey;
     }
 
     public void AddFriend()
@@ -31,6 +36,11 @@ public class UserElement : MonoBehaviour
     public void RejectFromGuild()
     {
         GetComponentInParent<DisplayJoinRequests>().RejectApplication(displayName);
+    }
+
+    public void RemoveMember()
+    {
+        GuildManager.Instance.KickMember(entityKey);
     }
 
     private void Awake()

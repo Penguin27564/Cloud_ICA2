@@ -19,7 +19,6 @@ public class DisplayJoinRequests : MonoBehaviour
 
     private RectTransform _rectTransform;
     private Dictionary<UserElement, EntityKey> _applicantList = new();
-    private EntityKey _groupKey;
 
     public void AcceptApplication(string applicantDisplayName)
     {
@@ -27,7 +26,7 @@ public class DisplayJoinRequests : MonoBehaviour
         {
             if (applicant.Key.displayName == applicantDisplayName)
             {
-                GuildManager.Instance.AcceptApplication(_groupKey, applicant.Value);
+                GuildManager.Instance.AcceptApplication(applicant.Value);
                 OnEnable();
                 return;
             }
@@ -41,7 +40,7 @@ public class DisplayJoinRequests : MonoBehaviour
         {
             if (applicant.Key.displayName == applicantDisplayName)
             {
-                GuildManager.Instance.RejectApplication(_groupKey, applicant.Value);
+                GuildManager.Instance.RejectApplication(applicant.Value);
                 OnEnable();
                 return;
             }
@@ -58,7 +57,7 @@ public class DisplayJoinRequests : MonoBehaviour
         },
         result =>
         {
-            _groupKey = result.Group;
+            GuildManager.Instance.currentGroupKey = result.Group;
             GetApplications(result.Group);
         },
         error =>

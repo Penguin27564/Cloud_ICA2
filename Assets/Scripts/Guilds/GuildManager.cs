@@ -30,6 +30,9 @@ public class GuildManager : MonoBehaviour
     // This cache pretty much only serves this example , and assumes that entities are uniquely identifiable by EntityId alone, which isn't technically true. Your data cache will have to be better.
     public readonly HashSet<KeyValuePair<string, string>> EntityGroupPairs = new HashSet<KeyValuePair<string, string>>();
     public readonly Dictionary<string, string> GroupNameById = new Dictionary<string, string>();
+    public EntityKey currentGroupKey;
+
+    public Action OnMemberRemoved;
 
     public static EntityKey EntityKeyMaker(string entityId)
     {
@@ -137,9 +140,9 @@ public class GuildManager : MonoBehaviour
     public void OnApply(ApplyToGroupResponse response)
     {
     }
-    public void AcceptApplication(EntityKey groupKey, EntityKey applicantKey)
+    public void AcceptApplication(EntityKey applicantKey)
     {
-        var request = new AcceptGroupApplicationRequest { Group = groupKey, Entity = applicantKey };
+        var request = new AcceptGroupApplicationRequest { Group = currentGroupKey, Entity = applicantKey };
         PlayFabGroupsAPI.AcceptGroupApplication(request, OnAcceptApplication, OnSharedError);
     }
     public void OnAcceptApplication(EmptyResponse response)
@@ -149,9 +152,9 @@ public class GuildManager : MonoBehaviour
         
         MessageBoxManager.Instance.DisplayMessage("Accepted application!");
     }
-    public void RejectApplication(EntityKey groupKey, EntityKey applicantKey)
+    public void RejectApplication(EntityKey applicantKey)
     {
-        var request = new RemoveGroupApplicationRequest { Group = groupKey, Entity = applicantKey};
+        var request = new RemoveGroupApplicationRequest { Group = currentGroupKey, Entity = applicantKey};
         PlayFabGroupsAPI.RemoveGroupApplication(request,
         result =>
         {
@@ -162,17 +165,22 @@ public class GuildManager : MonoBehaviour
             MessageBoxManager.Instance.DisplayMessage("Error rejecting application");
         });
     }
-    public void KickMember(string groupId, EntityKey entityKey)
+    public void KickMember(EntityKey entityKey)
     {
-        var request = new RemoveMembersRequest { Group = EntityKeyMaker(groupId), Members = new List<EntityKey> { entityKey } };
-        PlayFabGroupsAPI.RemoveMembers(request, OnKickMembers, OnSharedError);
-    }
-    private void OnKickMembers(EmptyResponse response)
-    {
-        var prevRequest= (RemoveMembersRequest)response.Request;
-        
-        Debug.Log("Entity kicked from Group: " + prevRequest.Members[0].Id + " to " + prevRequest.Group.Id);
-        EntityGroupPairs.Remove(new KeyValuePair<string, string>(prevRequest.Members[0].Id, prevRequest.Group.Id));
+        var request = new RemoveMembersRequest { Group = currentGroupKey, Members = new List<EntityKey> { entityKey } };
+        PlayFabGroupsAPI.RemoveMembers(request, 
+        result =>
+        {
+            Debug.Log("Entity kicked from Group: " + request.Members[0].Id + " to " + request.Group.Id);
+            MessageBoxManager.Instance.DisplayMessage("Removed member :(");
+            EntityGroupPairs.Remove(new KeyValuePair<string, string>(request.Members[0].Id, request.Group.Id));
+            OnMemberRemoved.Invoke();
+        }, 
+        error =>
+        {
+            MessageBoxManager.Instance.DisplayMessage("Error removing member");
+            Debug.LogError(error.GenerateErrorReport());
+        });
     }
 
 }
