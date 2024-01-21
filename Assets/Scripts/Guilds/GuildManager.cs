@@ -33,7 +33,7 @@ public class GuildManager : MonoBehaviour
     public EntityKey currentGroupKey;
     public List<UserElement> currentGuildMembers = new();
 
-    public Action OnMemberRemoved;
+    public Action OnMemberRemoved, OnInviteAccept;
 
     public static EntityKey EntityKeyMaker(string entityId)
     {
@@ -124,6 +124,16 @@ public class GuildManager : MonoBehaviour
         // Presumably, this would be part of a separate process where the recipient reviews and accepts the request
         var request = new AcceptGroupInvitationRequest { Group = EntityKeyMaker(prevRequest.Group.Id), Entity = prevRequest.Entity };
         PlayFabGroupsAPI.AcceptGroupInvitation(request, OnAcceptInvite, OnSharedError);
+    }
+    public void AcceptInvite(EntityKey groupKey)
+    {
+        var request = new AcceptGroupInvitationRequest { Group = groupKey };
+        PlayFabGroupsAPI.AcceptGroupInvitation(request,
+        result =>
+        {  
+            MessageBoxManager.Instance.DisplayMessage("Invite accepted!");
+            OnInviteAccept.Invoke();
+        }, OnSharedError);
     }
     public void OnAcceptInvite(EmptyResponse response)
     {

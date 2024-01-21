@@ -11,7 +11,7 @@ public class GuildInvitationElement : MonoBehaviour
 
     public void Accept()
     {
-
+        GuildManager.Instance.AcceptInvite(_groupKey);
     }
     
     public void Reject()
@@ -19,9 +19,15 @@ public class GuildInvitationElement : MonoBehaviour
 
     }
 
+    private void RemoveElement()
+    {
+        Destroy(gameObject);
+    }
+
     private void Start()
     {
         _groupName = GetComponentInChildren<TMP_Text>();
         GetComponent<RectTransform>().anchoredPosition3D = Vector3.zero;
+        GuildManager.Instance.OnInviteAccept += RemoveElement;
     }
 }
