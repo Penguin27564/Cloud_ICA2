@@ -2,8 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
+using PlayFab.GroupsModels;
 using TMPro;
-using System;
 
 public class PFDataMgr : MonoBehaviour
 {
@@ -27,6 +27,7 @@ public class PFDataMgr : MonoBehaviour
     
     public float playerSpeed, playerFireRate;
     public string currentPlayerDisplayName, currentPlayerPlayFabID;
+    public PlayFab.GroupsModels.EntityKey currentPlayEntityKey;
 
 
     [SerializeField]
@@ -193,6 +194,11 @@ public class PFDataMgr : MonoBehaviour
         {
             currentPlayerPlayFabID = result.AccountInfo.PlayFabId;
             currentPlayerDisplayName = result.AccountInfo.TitleInfo.DisplayName;
+
+            var jsonConverter = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
+
+            currentPlayEntityKey = jsonConverter.DeserializeObject<PlayFab.GroupsModels.EntityKey>
+                                    (jsonConverter.SerializeObject(result.AccountInfo.TitleInfo.TitlePlayerAccount));
         },
         error =>
         {

@@ -33,7 +33,7 @@ public class GuildManager : MonoBehaviour
     public EntityKey currentGroupKey;
     public List<UserElement> currentGuildMembers = new();
 
-    public Action OnMemberRemoved, OnInviteAccept;
+    public Action OnMemberRemoved, OnInviteInteraction;
 
     public static EntityKey EntityKeyMaker(string entityId)
     {
@@ -110,21 +110,6 @@ public class GuildManager : MonoBehaviour
         EntityGroupPairs.IntersectWith(temp);
         GroupNameById.Remove(prevRequest.Group.Id);
     }
-
-    public void InviteToGroup(string groupId)
-    {
-        // A player-controlled entity invites another player-controlled entity to an existing group
-        var request = new InviteToGroupRequest { Group = EntityKeyMaker(groupId) };
-        PlayFabGroupsAPI.InviteToGroup(request, OnInvite, OnSharedError);
-    }
-    public void OnInvite(InviteToGroupResponse response)
-    {
-        var prevRequest = (InviteToGroupRequest)response.Request;
-
-        // Presumably, this would be part of a separate process where the recipient reviews and accepts the request
-        var request = new AcceptGroupInvitationRequest { Group = EntityKeyMaker(prevRequest.Group.Id), Entity = prevRequest.Entity };
-        PlayFabGroupsAPI.AcceptGroupInvitation(request, OnAcceptInvite, OnSharedError);
-    }
     public void AcceptInvite(EntityKey groupKey)
     {
         var request = new AcceptGroupInvitationRequest { Group = groupKey };
@@ -132,16 +117,19 @@ public class GuildManager : MonoBehaviour
         result =>
         {  
             MessageBoxManager.Instance.DisplayMessage("Invite accepted!");
-            OnInviteAccept.Invoke();
+            OnInviteInteraction.Invoke();
         }, OnSharedError);
     }
-    public void OnAcceptInvite(EmptyResponse response)
+    public void DeclineInvite(EntityKey groupKey, EntityKey userKey)
     {
-        var prevRequest = (AcceptGroupInvitationRequest)response.Request;
-        Debug.Log("Entity Added to Group: " + prevRequest.Entity.Id + " to " + prevRequest.Group.Id);
-        EntityGroupPairs.Add(new KeyValuePair<string, string>(prevRequest.Entity.Id, prevRequest.Group.Id));
+        var request = new RemoveGroupInvitationRequest { Group = groupKey, Entity = userKey };
+        PlayFabGroupsAPI.RemoveGroupInvitation(request,
+        result =>
+        {  
+            MessageBoxManager.Instance.DisplayMessage("Invite rejected :(");
+            OnInviteInteraction.Invoke();
+        }, OnSharedError);
     }
-
     public void ApplyToGroup(string groupId)
     {
         // A player-controlled entity applies to join an existing group (of which they are not already a member)

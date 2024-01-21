@@ -7,7 +7,7 @@ using UnityEngine;
 public class GuildInvitationElement : MonoBehaviour
 {
     public TMP_Text _groupName;
-    public EntityKey _groupKey;
+    public EntityKey _groupKey, _userKey;
 
     public void Accept()
     {
@@ -16,7 +16,7 @@ public class GuildInvitationElement : MonoBehaviour
     
     public void Reject()
     {
-
+        GuildManager.Instance.DeclineInvite(_groupKey, _userKey);
     }
 
     private void RemoveElement()
@@ -28,6 +28,6 @@ public class GuildInvitationElement : MonoBehaviour
     {
         _groupName = GetComponentInChildren<TMP_Text>();
         GetComponent<RectTransform>().anchoredPosition3D = Vector3.zero;
-        GuildManager.Instance.OnInviteAccept += RemoveElement;
+        GuildManager.Instance.OnInviteInteraction += RemoveElement;
     }
 }

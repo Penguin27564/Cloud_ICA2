@@ -14,13 +14,17 @@ public class DisplayGuildInvites : MonoBehaviour
     private RectTransform _rectTransform;
     private List<GameObject> _inviteList = new();
 
-    private void AddElement(string name, EntityKey entityKey)
+    private void AddElement(string name, EntityKey entityKey, EntityKey userKey)
     {
         GuildInvitationElement newElement = Instantiate(_invitationElement);
+
         newElement._groupName.text = name;
         newElement._groupKey = entityKey;
+        newElement._userKey = userKey;
+
         newElement.transform.SetParent(transform);
         newElement.transform.localScale = Vector3.one;
+
         _inviteList.Add(newElement.gameObject);
         newElement.gameObject.SetActive(false);
     }
@@ -47,7 +51,7 @@ public class DisplayGuildInvites : MonoBehaviour
             },
             result =>
             {
-                AddElement(result.GroupName, result.Group);
+                AddElement(result.GroupName, result.Group, PFDataMgr.Instance.currentPlayEntityKey);
                 if (invite == invites[^1])
                 {
                     DisplayInvites();
