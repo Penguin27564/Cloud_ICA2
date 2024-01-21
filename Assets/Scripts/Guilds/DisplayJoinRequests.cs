@@ -3,13 +3,10 @@ using UnityEngine;
 using PlayFab;
 using PlayFab.GroupsModels;
 using PlayFab.ClientModels;
+using PlayFab.ProfilesModels;
 using PlayFab.Json;
 using TMPro;
 using EntityKey = PlayFab.GroupsModels.EntityKey;
-using PlayFab.ProfilesModels;
-using UnityEngine.Rendering;
-using System.Text;
-using UnityEditor.Performance.ProfileAnalyzer;
 
 public class DisplayJoinRequests : MonoBehaviour
 {
@@ -20,7 +17,19 @@ public class DisplayJoinRequests : MonoBehaviour
     private UserElement _userElement;
 
     private RectTransform _rectTransform;
-    private List<GameObject> _elementsToAdd = new();
+    private Dictionary<UserElement, EntityKey> _applicantList = new();
+    private EntityKey _groupKey;
+
+    public void AcceptApplication(string applicantDisplayName)
+    {
+        foreach (var applicant in _applicantList)
+        {
+            if (applicant.Key.displayName == applicantDisplayName)
+            {
+                GuildManager.Instance.AcceptApplication(_groupKey, applicant.Value);
+            }
+        }
+    }
     private void OnEnable()
     {
         ClearDisplay();
@@ -30,6 +39,7 @@ public class DisplayJoinRequests : MonoBehaviour
         },
         result =>
         {
+            _groupKey = result.Group;
             GetApplications(result.Group);
         },
         error =>
@@ -80,7 +90,7 @@ public class DisplayJoinRequests : MonoBehaviour
                 playFabIDs.Add(profile.Lineage.MasterPlayerAccountId);
             }
 
-            GetApplicantsDisplayNames(playFabIDs);
+            GetApplicantsDisplayNames(playFabIDs, entityKeys);
         },
         error =>
         {
@@ -88,7 +98,7 @@ public class DisplayJoinRequests : MonoBehaviour
         });
     }
 
-    private void GetApplicantsDisplayNames(List<string> memberIDs)
+    private void GetApplicantsDisplayNames(List<string> memberIDs, List<EntityKey> memberKeys)
     {
         var csrequest = new ExecuteCloudScriptRequest
         {
@@ -107,9 +117,9 @@ public class DisplayJoinRequests : MonoBehaviour
 
             if (dic.TryGetValue("Result", out List<string> value))
             {
-                foreach (var name in value)
+                for(int i = 0; i < value.Count; i++)
                 {
-                    AddApplicant(name);
+                    AddApplicant(value[i], memberIDs[i], memberKeys[i]);
                 }
 
                 DisplayApplicants();
@@ -121,21 +131,21 @@ public class DisplayJoinRequests : MonoBehaviour
         });
     }
 
-    private void AddApplicant(string name)
+    private void AddApplicant(string name, string playfabID, EntityKey entityKey)
     {
         UserElement newElement = Instantiate(_userElement);
-        newElement.SetName(name, "");
+        newElement.SetName(name, playfabID);
         newElement.transform.SetParent(transform);
         newElement.transform.localScale = Vector3.one;
-        _elementsToAdd.Add(newElement.gameObject);
+        _applicantList.Add(newElement, entityKey);
         newElement.gameObject.SetActive(false);
     }
 
     private void DisplayApplicants()
     {
-        foreach (var element in _elementsToAdd)
+        foreach (var element in _applicantList)
         {
-            element.SetActive(true);
+            element.Key.gameObject.SetActive(true);
         }
 
         Vector2 contentSize = new(_rectTransform.sizeDelta.x, 110 * transform.childCount);
@@ -149,6 +159,7 @@ public class DisplayJoinRequests : MonoBehaviour
 
     private void ClearDisplay()
     {
+        _applicantList.Clear();
         foreach (Transform child in transform)
         {
            Destroy(child.gameObject);

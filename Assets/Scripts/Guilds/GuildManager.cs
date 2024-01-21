@@ -136,15 +136,11 @@ public class GuildManager : MonoBehaviour
     }
     public void OnApply(ApplyToGroupResponse response)
     {
-        var prevRequest = (ApplyToGroupRequest)response.Request;
-
-        // Presumably, this would be part of a separate process where the recipient reviews and accepts the request
-        var request = new AcceptGroupApplicationRequest { Group = prevRequest.Group, Entity = prevRequest.Entity };
-        PlayFabGroupsAPI.AcceptGroupApplication(request, OnAcceptApplication, OnSharedError);
     }
-    public void AcceptApplication()
+    public void AcceptApplication(EntityKey groupKey, EntityKey applicantKey)
     {
-        
+        var request = new AcceptGroupApplicationRequest { Group = groupKey, Entity = applicantKey };
+        PlayFabGroupsAPI.AcceptGroupApplication(request, OnAcceptApplication, OnSharedError);
     }
     public void OnAcceptApplication(EmptyResponse response)
     {
