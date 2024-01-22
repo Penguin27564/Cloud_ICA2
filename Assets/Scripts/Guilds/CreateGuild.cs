@@ -22,6 +22,12 @@ public class CreateGuild : MonoBehaviour
     {
         if(!VerifyGuildName()) return;
 
+        if (GuildManager.Instance.currentGroupKey != null)
+        {
+            MessageBoxManager.Instance.DisplayMessage("Already in a guild");
+            return;
+        }
+
         List<PlayFab.GroupsModels.EntityKey> initialMemberList = new();
 
         var jsonConverter = PluginManager.GetPlugin<ISerializerPlugin>(PluginContract.PlayFab_Serializer);
