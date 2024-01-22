@@ -34,7 +34,8 @@ public class GuildManager : MonoBehaviour
         },
         result =>
         {
-            currentGroupKey = result.Groups[0].Group;
+            currentGroupKey = (result.Groups.Count == 0) ? null :  result.Groups[0].Group;
+            Debug.Log(currentGroupKey);
         },
         error =>
         {
@@ -87,6 +88,24 @@ public class GuildManager : MonoBehaviour
             Debug.Log("Group Created: " + result.GroupName + " - " + result.Group.Id);
             MessageBoxManager.Instance.DisplayMessage("Guild successfully created!");
 
+            // Add group to stored group data
+            var dataRequest = new ExecuteCloudScriptRequest
+            {
+                FunctionName = "AddGuildInfo",
+                FunctionParameter = new
+                {
+                    GuildID = result.Group.Id,
+                    GuildName = groupName
+                }
+            };
+
+            PlayFabClientAPI.ExecuteCloudScript(dataRequest,
+            result =>
+            {
+                Debug.Log("Added group to data: " + groupName);
+            }, OnSharedError);
+
+            // Invite members
             if (initialMembers.Count > 0)
             {
                 var csrequest = new ExecuteCloudScriptRequest
