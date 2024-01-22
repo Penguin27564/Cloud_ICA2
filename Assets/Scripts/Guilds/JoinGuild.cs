@@ -13,6 +13,11 @@ public class JoinGuild : MonoBehaviour
 
     public void ApplyToGuild()
     {
+        if (GuildManager.Instance.currentGroupKey != null)
+        {
+            MessageBoxManager.Instance.DisplayMessage("Already in a guild");
+            return;
+        }
         PlayFabGroupsAPI.GetGroup(new GetGroupRequest()
         {
             GroupName = if_guildName.text

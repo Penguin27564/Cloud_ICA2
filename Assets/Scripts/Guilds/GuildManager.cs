@@ -25,6 +25,22 @@ public class GuildManager : MonoBehaviour
     {
         _instance = this;
     }
+
+    private void Awake()
+    {
+        // Find if player is currently in a group
+        PlayFabGroupsAPI.ListMembership(new ListMembershipRequest
+        {
+        },
+        result =>
+        {
+            currentGroupKey = result.Groups[0].Group;
+        },
+        error =>
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        });
+    }
     
     // A local cache of some bits of PlayFab data
     // This cache pretty much only serves this example , and assumes that entities are uniquely identifiable by EntityId alone, which isn't technically true. Your data cache will have to be better.
@@ -120,6 +136,12 @@ public class GuildManager : MonoBehaviour
     }
     public void AcceptInvite(EntityKey groupKey)
     {
+        if (currentGroupKey != null)
+        {
+            MessageBoxManager.Instance.DisplayMessage("Unable to accept invite while in a guild");
+            return;
+        }
+
         var request = new AcceptGroupInvitationRequest { Group = groupKey };
         PlayFabGroupsAPI.AcceptGroupInvitation(request,
         result =>
@@ -200,6 +222,7 @@ public class GuildManager : MonoBehaviour
         PlayFabGroupsAPI.RemoveMembers(request, 
         result =>
         {
+            currentGroupKey = null;
             Debug.Log("Left guild");
             MessageBoxManager.Instance.DisplayMessage("Left guild");
             EntityGroupPairs.Remove(new KeyValuePair<string, string>(request.Members[0].Id, request.Group.Id));
