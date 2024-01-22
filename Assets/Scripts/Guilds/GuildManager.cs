@@ -253,5 +253,9 @@ public class GuildManager : MonoBehaviour
             Debug.LogError(error.GenerateErrorReport());
         });
     }
-
+    
+    private void Update()
+    {
+        Debug.Log("CURRENT GROUP KEY: " + currentGroupKey);
+    }
 }

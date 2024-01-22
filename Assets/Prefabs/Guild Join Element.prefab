@@ -406,9 +406,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5686935109266425196}
-        m_TargetAssemblyTypeName: UserElement, Assembly-CSharp
-        m_MethodName: AddFriend
+      - m_Target: {fileID: 254547895894308009}
+        m_TargetAssemblyTypeName: GuildJoinElement, Assembly-CSharp
+        m_MethodName: Join
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -445,6 +445,7 @@ GameObject:
   - component: {fileID: 8763384631633639743}
   - component: {fileID: 7459821704461629041}
   - component: {fileID: 5686935109266425196}
+  - component: {fileID: 254547895894308009}
   m_Layer: 5
   m_Name: Guild Join Element
   m_TagString: Untagged
@@ -525,3 +526,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b463059a9ff9fbb42b5eeef5377cabb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playFabID: 
+  displayName: 
+  entityKey:
+    Id: 
+    Type: 
+--- !u!114 &254547895894308009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7171044360857215859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a015f14d96478574d84e7457dadcee63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _guildNameText: {fileID: 865162334560983022}
+  guildName: 
