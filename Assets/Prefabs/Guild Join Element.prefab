@@ -257,9 +257,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5686935109266425196}
-        m_TargetAssemblyTypeName: UserElement, Assembly-CSharp
-        m_MethodName: AddFriend
+      - m_Target: {fileID: 254547895894308009}
+        m_TargetAssemblyTypeName: GuildJoinElement, Assembly-CSharp
+        m_MethodName: ListGroupMembers
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

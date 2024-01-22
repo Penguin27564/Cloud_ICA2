@@ -62,22 +62,6 @@ public class GuildManager : MonoBehaviour
         Debug.LogError(error.GenerateErrorReport());
     }
 
-    public void ListGroups(EntityKey entityKey)
-    {
-        var request = new ListMembershipRequest { Entity = entityKey };
-        PlayFabGroupsAPI.ListMembership(request, OnListGroups, OnSharedError);
-    }
-
-    private void OnListGroups(ListMembershipResponse response)
-    {
-        var prevRequest = (ListMembershipRequest)response.Request;
-        foreach (var pair in response.Groups)
-        {
-            GroupNameById[pair.Group.Id] = pair.GroupName;
-            EntityGroupPairs.Add(new KeyValuePair<string, string>(prevRequest.Entity.Id, pair.Group.Id));
-        }
-    }
-
     public void CreateGroup(string groupName, List<EntityKey> initialMembers)
     {
         // A player-controlled entity creates a new group
@@ -252,10 +236,5 @@ public class GuildManager : MonoBehaviour
             MessageBoxManager.Instance.DisplayMessage("Error removing member");
             Debug.LogError(error.GenerateErrorReport());
         });
-    }
-    
-    private void Update()
-    {
-        Debug.Log("CURRENT GROUP KEY: " + currentGroupKey);
     }
 }

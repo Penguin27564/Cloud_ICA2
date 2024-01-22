@@ -9,13 +9,14 @@ public class GuildJoinElement : MonoBehaviour
 {
     [SerializeField]
     private TMP_Text _guildNameText;
+    private GameObject _membersPanel;
 
-    [HideInInspector]
     public string guildName;
+
+    private DisplayGuildMembers _displayGuildMemeberScript;
 
     public void Join()
     {
-        Debug.Log(GuildManager.Instance.currentGroupKey);
         if (GuildManager.Instance.currentGroupKey != null)
         {
             MessageBoxManager.Instance.DisplayMessage("Already in a guild");
@@ -37,6 +38,12 @@ public class GuildJoinElement : MonoBehaviour
         });
     }
 
+    public void ListGroupMembers()
+    {
+        _membersPanel.SetActive(true);
+        _displayGuildMemeberScript.GetGroupByName(guildName);
+    }
+
     private void OnEnable()
     {
         _guildNameText.text = guildName;
@@ -45,5 +52,7 @@ public class GuildJoinElement : MonoBehaviour
     private void Start()
     {
         GetComponent<RectTransform>().anchoredPosition3D = Vector3.zero;
+        _membersPanel = GameObject.Find("Join guilds Page").transform.Find("Guild member display").gameObject;
+        _displayGuildMemeberScript = _membersPanel.GetComponentInChildren<DisplayGuildMembers>();
     }
 }

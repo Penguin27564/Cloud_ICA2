@@ -18,8 +18,11 @@ public class DisplayGuildMembers : MonoBehaviour
     [SerializeField]
     private UserElement _memberElement, _adminMemberElement;
 
+    [SerializeField]
+    private bool _getGuildOnEnable = true;
+
     private bool _isAdmin = true;
-    //private List<GameObject> _elementsToAdd = new();
+    private List<GameObject> _elementsToAdd = new();
     private RectTransform _rectTransform;
 
     public void AddItem(string name, string playfabID, EntityKey entityKey)
@@ -29,21 +32,37 @@ public class DisplayGuildMembers : MonoBehaviour
         newElement.transform.SetParent(transform);
         newElement.transform.localScale = Vector3.one;
 
-        GuildManager.Instance.currentGuildMembers.Add(newElement);
+        if (_getGuildOnEnable) GuildManager.Instance.currentGuildMembers.Add(newElement);
+        else _elementsToAdd.Add(newElement.gameObject);
         
         newElement.gameObject.SetActive(false);
     }
 
     public void DisplayMembers()
     {
-        _noUsersText.SetActive(!(transform.childCount > 0));
-        foreach (var element in GuildManager.Instance.currentGuildMembers)
+        if (_getGuildOnEnable)
         {
-            element.gameObject.SetActive(true);
-        }
+            _noUsersText.SetActive(!(transform.childCount > 0));
+            foreach (var element in GuildManager.Instance.currentGuildMembers)
+            {
+                element.gameObject.SetActive(true);
+            }
 
-        Vector2 contentSize = new(220 * transform.childCount, _rectTransform.sizeDelta.y);
-        _rectTransform.sizeDelta = contentSize;
+            Vector2 contentSize = new(220 * transform.childCount, _rectTransform.sizeDelta.y);
+            _rectTransform.sizeDelta = contentSize;
+        }
+        else
+        {
+            
+                        Debug.Log("TESTWLWIEJWLIF: DISPLAYING INFO");
+            foreach (var element in _elementsToAdd)
+            {
+                element.SetActive(true);
+            }
+
+            Vector2 contentSize = new(_rectTransform.sizeDelta.x, 110 * transform.childCount);
+            _rectTransform.sizeDelta = contentSize;
+        }
     }
 
     public void ClearDisplay()
@@ -56,9 +75,33 @@ public class DisplayGuildMembers : MonoBehaviour
 
     private void OnEnable()
     {
-        GuildManager.Instance.currentGuildMembers.Clear();
         ClearDisplay();
-        GetGroup();
+        if (_getGuildOnEnable)
+        {
+            GuildManager.Instance.currentGuildMembers.Clear();
+            GetGroup();
+        }
+        else
+        {
+            _elementsToAdd.Clear();
+        }
+    }
+
+    public void GetGroupByName(string groupName)
+    {
+        PlayFabGroupsAPI.GetGroup(new GetGroupRequest
+        {
+            GroupName = groupName
+        },
+        result =>
+        {
+            Debug.Log("TESTWLWIEJWLIF: " + result.GroupName);
+            GetMembers(result.Group);
+        },
+        error =>
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        });
     }
 
     private void GetGroup()
@@ -94,8 +137,11 @@ public class DisplayGuildMembers : MonoBehaviour
             {
                 foreach (var player in role.Members)
                 {
-                    if (player.Lineage["master_player_account"].Id != PFDataMgr.Instance.currentPlayerPlayFabID)
+                    if (player.Lineage["master_player_account"].Id != PFDataMgr.Instance.currentPlayerPlayFabID ||
+                        !_getGuildOnEnable)
                     {
+                        Debug.Log("TESTWLWIEJWLIF: ADDING MEMBER");
+
                         memberIDs.Add(player.Lineage["master_player_account"].Id);
                         memberKeys.Add(player.Key);
                     }
@@ -130,6 +176,8 @@ public class DisplayGuildMembers : MonoBehaviour
             {
                 for (int i = 0; i < value.Count; i++)
                 {
+                        Debug.Log("TESTWLWIEJWLIF: ADDING MEMBER NAME");
+
                     AddItem(value[i], memberIDs[i], memberKeys[i]);
                 }
                 DisplayMembers();
