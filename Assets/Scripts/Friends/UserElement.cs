@@ -43,18 +43,24 @@ public class UserElement : MonoBehaviour
 
     public void RemoveMember()
     {
+        if (ownerImage.activeInHierarchy)
+        {
+            MessageBoxManager.Instance.DisplayMessage("Unable to kick owner");
+            return;
+        }
+        if (admiralImage.activeInHierarchy)
+        {
+            MessageBoxManager.Instance.DisplayMessage("Unable to kick admirals");
+            return;
+        }
         GuildManager.Instance.KickMember(entityKey);
     }
 
     public void Promote()
     {
-        if (memberImage.activeInHierarchy && entityKey.Id != PFDataMgr.Instance.currentPlayerEntityKey.Id)
+        if (memberImage.activeInHierarchy && PFDataMgr.Instance.currentPlayerGuildRoleId == "admins")
         {
             GuildManager.Instance.ChangeMemberRole(entityKey, "admirals", "members", this);
-        }
-        else if (entityKey.Id == PFDataMgr.Instance.currentPlayerEntityKey.Id)
-        {
-            MessageBoxManager.Instance.DisplayMessage("Unable to promote self");
         }
         else
         {
@@ -64,13 +70,9 @@ public class UserElement : MonoBehaviour
 
     public void Demote()
     {
-        if (admiralImage.activeInHierarchy && entityKey.Id != PFDataMgr.Instance.currentPlayerEntityKey.Id)
+        if (admiralImage.activeInHierarchy && PFDataMgr.Instance.currentPlayerGuildRoleId == "admins")
         {
             GuildManager.Instance.ChangeMemberRole(entityKey, "members", "admirals", this);
-        }
-        else if (entityKey.Id == PFDataMgr.Instance.currentPlayerEntityKey.Id)
-        {
-            MessageBoxManager.Instance.DisplayMessage("Unable to demote self");
         }
         else
         {

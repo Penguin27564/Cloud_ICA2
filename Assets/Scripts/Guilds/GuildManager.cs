@@ -51,7 +51,7 @@ public class GuildManager : MonoBehaviour
                             if (player.Key.Id == PFDataMgr.Instance.currentPlayerEntityKey.Id)
                             {
                                 Debug.Log("Set current player role as: " + role.RoleId);
-                                PFDataMgr.Instance.currentPlayerGuildRole = role.RoleId;
+                                PFDataMgr.Instance.currentPlayerGuildRoleId = role.RoleId;
                             }
                         }
                     }
@@ -123,7 +123,7 @@ public class GuildManager : MonoBehaviour
             {
                 Group = result.Group,
                 RoleId = "admirals",
-                RoleName = "Admiral"
+                RoleName = "Admirals"
             };
 
             PlayFabGroupsAPI.CreateRole(rolerequest, result => {}, OnSharedError);
@@ -255,26 +255,12 @@ public class GuildManager : MonoBehaviour
     }
     public void LeaveGroup()
     {
-        HandleOwnershipTransfer();
-        var request = new RemoveMembersRequest
-        { 
-            Group = currentGroupKey,
-            Members = new List<EntityKey>{PFDataMgr.Instance.currentPlayerEntityKey} 
-        };
-
-        PlayFabGroupsAPI.RemoveMembers(request, 
-        result =>
+        if (PFDataMgr.Instance.currentPlayerGuildRoleId == "admins")
         {
-            Debug.Log("Left guild");
-            MessageBoxManager.Instance.DisplayMessage("Left guild");
-            EntityGroupPairs.Remove(new KeyValuePair<string, string>(request.Members[0].Id, request.Group.Id));
-            OnMemberRemoved.Invoke();
-        }, 
-        error =>
-        {
-            MessageBoxManager.Instance.DisplayMessage("Error removing member");
-            Debug.LogError(error.GenerateErrorReport());
-        });
+            HandleOwnershipTransfer();
+            return;
+        }
+        RemoveMemberFromGroup();
     }
     public void ChangeMemberRole(EntityKey memberKey, string newRoleID, string currentRoleID, UserElement userElement)
     {
@@ -310,14 +296,22 @@ public class GuildManager : MonoBehaviour
 
     private void HandleOwnershipTransfer()
     {
+        Debug.Log("HANDLE OWNER TRANSFERS");
         PlayFabGroupsAPI.ListGroupMembers(new ListGroupMembersRequest
         {
             Group = currentGroupKey
         },
         result =>
         {
-            if (result.Members.Count == 0)
+            int playerCheck = 0;
+            foreach (var role in result.Members)
             {
+                playerCheck += role.Members.Count;
+            }
+
+            if (playerCheck == 1)
+            {
+                Debug.Log("DELETING GROUP");
                 DeleteGroup(currentGroupKey);
                 return;
             }
@@ -331,6 +325,7 @@ public class GuildManager : MonoBehaviour
                     if (role.RoleId == "admirals")
                     {
                         ChangeMemberRole(player.Key, "admins", "admirals", null);
+                        RemoveMemberFromGroup();
                         return;
                     }
                     else if (role.RoleId == "members")
@@ -341,6 +336,54 @@ public class GuildManager : MonoBehaviour
             }
 
             ChangeMemberRole(tempNewOwner, "admins", "members", null);
+            RemoveMemberFromGroup();
+        },
+        error =>
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        });
+    }
+
+    private void RemoveMemberFromGroup()
+    {
+        PlayFabGroupsAPI.ListGroupMembers(new ListGroupMembersRequest
+        {
+            Group = currentGroupKey
+        },
+        result =>
+        {
+            int playerCheck = 0;
+            foreach (var role in result.Members)
+            {
+                playerCheck += role.Members.Count;
+            }
+
+            if (playerCheck == 1)
+            {
+                Debug.Log("DELETING GROUP in remove member from grp");
+                DeleteGroup(currentGroupKey);
+                return;
+            }
+            
+            var request = new RemoveMembersRequest
+            { 
+                Group = currentGroupKey,
+                Members = new List<EntityKey>{PFDataMgr.Instance.currentPlayerEntityKey} 
+            };
+
+            PlayFabGroupsAPI.RemoveMembers(request, 
+            result =>
+            {
+                Debug.Log("Left guild");
+                MessageBoxManager.Instance.DisplayMessage("Left guild");
+                EntityGroupPairs.Remove(new KeyValuePair<string, string>(request.Members[0].Id, request.Group.Id));
+                OnMemberRemoved.Invoke();
+            }, 
+            error =>
+            {
+                MessageBoxManager.Instance.DisplayMessage("Error removing member");
+                Debug.LogError(error.GenerateErrorReport());
+            });
         },
         error =>
         {
