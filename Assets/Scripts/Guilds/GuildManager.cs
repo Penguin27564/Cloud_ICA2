@@ -100,6 +100,7 @@ public class GuildManager : MonoBehaviour
         {
             Debug.Log("Group Created: " + result.GroupName + " - " + result.Group.Id);
             MessageBoxManager.Instance.DisplayMessage("Guild successfully created!");
+            currentGroupKey = result.Group;
 
             // Add group to stored group data
             var dataRequest = new ExecuteCloudScriptRequest
@@ -154,19 +155,33 @@ public class GuildManager : MonoBehaviour
     {
         // A title, or player-controlled entity with authority to do so, decides to destroy an existing group
         var request = new DeleteGroupRequest { Group = groupKey };
-        PlayFabGroupsAPI.DeleteGroup(request, OnDeleteGroup, OnSharedError);
-    }
-    private void OnDeleteGroup(EmptyResponse response)
-    {
-        var prevRequest = (DeleteGroupRequest)response.Request;
-        Debug.Log("Group Deleted: " + prevRequest.Group.Id);
+        PlayFabGroupsAPI.DeleteGroup(request,
+        result =>
+        {
+            var dataRequest = new ExecuteCloudScriptRequest
+            {
+                FunctionName = "AddGuildInfo",
+                FunctionParameter = new
+                {
+                    GuildID = groupKey.Id,
+                    GuildName = ""
+                }
+            };
 
-        var temp = new HashSet<KeyValuePair<string, string>>();
-        foreach (var each in EntityGroupPairs)
-            if (each.Value != prevRequest.Group.Id)
-                temp.Add(each);
-        EntityGroupPairs.IntersectWith(temp);
-        GroupNameById.Remove(prevRequest.Group.Id);
+            PlayFabClientAPI.ExecuteCloudScript(dataRequest,
+            result =>
+            {
+                Debug.Log("Deleted group from data");
+            }, OnSharedError);
+
+            var temp = new HashSet<KeyValuePair<string, string>>();
+            foreach (var each in EntityGroupPairs)
+                if (each.Value != request.Group.Id)
+                    temp.Add(each);
+            EntityGroupPairs.IntersectWith(temp);
+            GroupNameById.Remove(request.Group.Id);
+
+        }, OnSharedError);
     }
     public void InviteMember(EntityKey userKey)
     {
