@@ -19,6 +19,12 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         StopAllCoroutines();
     }
 
+    public void OnDisable()
+    {
+        TooltipSystem.Hide();
+        StopAllCoroutines();
+    }
+
     private IEnumerator ShowDelay()
     {
         yield return new WaitForSeconds(showDelay);

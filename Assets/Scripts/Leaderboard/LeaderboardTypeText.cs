@@ -29,5 +29,9 @@ public class LeaderboardTypeText : MonoBehaviour
         {
             _displayText.text = "Friends";
         }
+        else if (_pfLeaderboard.leaderboardType == 3)
+        {
+            _displayText.text = "Guild";
+        }
     }
 }

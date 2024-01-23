@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using PlayFab;
 using PlayFab.ClientModels;
+using PlayFab.GroupsModels;
+using PlayFab.Json;
 using TMPro;
 using UnityEngine;
 
@@ -25,7 +27,7 @@ public class PlayFabLeaderboard : MonoBehaviour
 
     public Action OnUpdateLeaderboardType;
 
-    public int leaderboardType = 0; //0 - Global, 1 - Proximity, 2 - Friend (might change to enum)
+    public int leaderboardType = 0; //0 - Global, 1 - Proximity, 2 - Friend, 3 - Guild (might change to enum)
 
     [SerializeField]
     private UI_Leaderboard _leaderboardScript;
@@ -78,6 +80,13 @@ public class PlayFabLeaderboard : MonoBehaviour
         OnUpdateLeaderboardType.Invoke();
     }
 
+    public void SetToGuild()
+    {
+        leaderboardType = 3;
+        OnButtongGetGuildLB();
+        OnUpdateLeaderboardType.Invoke();
+    }
+
     public void OnButtonGetLeaderboard()
     {
         var leaderboardRequest = new GetLeaderboardRequest
@@ -120,6 +129,89 @@ public class PlayFabLeaderboard : MonoBehaviour
         };
 
         PlayFabClientAPI.GetFriendLeaderboard(friendLeaderboardRequest, OnLeaderboardGet, OnError);
+    }
+
+    public void OnButtongGetGuildLB()
+    {
+        PlayFabGroupsAPI.ListGroupMembers(new ListGroupMembersRequest
+        {
+            Group = GuildManager.Instance.currentGroupKey
+        },
+        result =>
+        {
+            List<string> memberIDs = new();
+            foreach (var role in result.Members)
+            {
+                foreach (var player in role.Members)
+                {
+                    memberIDs.Add(player.Lineage["master_player_account"].Id);
+                }
+            }
+
+            GetNamesFromEntityID(memberIDs);
+        },
+        error =>
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        });
+    }
+
+    private void GetNamesFromEntityID(List<string> idList)
+    {
+        var csrequest = new ExecuteCloudScriptRequest
+        {
+            FunctionName = "GetDisplayNamesFromID",
+            FunctionParameter = new
+            {
+                UserIDs = idList
+            }
+        };
+
+        PlayFabClientAPI.ExecuteCloudScript(csrequest,
+        result =>
+        {
+            List<string> memberNames = new();
+            Dictionary<string, List<string>> dic = 
+                PlayFabSimpleJson.DeserializeObject<Dictionary<string, List<string>>>(result.FunctionResult.ToString());
+
+            if (dic.TryGetValue("Result", out List<string> value))
+            {
+                for (int i = 0; i < value.Count; i++)
+                {
+                    memberNames.Add(value[i]);
+                }
+
+                GetGuildLB(memberNames);
+            }
+        },
+        error =>
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        });
+    }
+
+    private void GetGuildLB(List<string> memberNames)
+    {
+        var leaderboardRequest = new GetLeaderboardRequest
+        {
+            StatisticName = "Highscore",
+            StartPosition = 0,
+            MaxResultsCount = _maxResultsCount
+        };
+
+        PlayFabClientAPI.GetLeaderboard(leaderboardRequest,
+        result =>
+        {
+            _leaderboardScript.ClearLeaderboard();
+            foreach (var item in result.Leaderboard)
+            {
+                if (memberNames.Contains(item.DisplayName))
+                {
+                    _leaderboardScript.AddItem(item.Position, item.DisplayName, item.StatValue);
+                }
+            }
+            StartCoroutine(_leaderboardScript.DisplayLeaderboard());
+        }, OnError);
     }
 
     private void OnProximityLeaderboardGet(GetLeaderboardAroundPlayerResult r)
