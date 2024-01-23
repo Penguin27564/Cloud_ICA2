@@ -13,9 +13,6 @@ public class PFUserMgt : MonoBehaviour
     private string _nextScene;
 
     [SerializeField]
-    private TMP_Text msgbox;
-
-    [SerializeField]
     private TMP_InputField if_username, if_email, if_password, if_displayName;
 
     private void UpdateMsg(string msg)
@@ -40,7 +37,6 @@ public class PFUserMgt : MonoBehaviour
 
     private void OnRegSucc(RegisterPlayFabUserResult r)
     {
-        msgbox.text = "Register Success! " + r.PlayFabId;
         var req = new UpdateUserTitleDisplayNameRequest
         {
             DisplayName = if_displayName.text
