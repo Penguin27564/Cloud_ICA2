@@ -25,12 +25,31 @@ public class DisplayGuildMembers : MonoBehaviour
     private List<GameObject> _elementsToAdd = new();
     private RectTransform _rectTransform;
 
-    public void AddItem(string name, string playfabID, EntityKey entityKey)
+    public void AddItem(string name, string playfabID, EntityKey entityKey, string roleID)
     {
         UserElement newElement = Instantiate(_isAdmin ? _adminMemberElement : _memberElement);
         newElement.SetName(name, playfabID, entityKey);
         newElement.transform.SetParent(transform);
         newElement.transform.localScale = Vector3.one;
+        Debug.Log("name: " + name + " | role: " + roleID);
+        if (roleID == "admins")
+        {
+            newElement.ownerImage.SetActive(true);
+            newElement.admiralImage.SetActive(false);
+            newElement.memberImage.SetActive(false);
+        }
+        // else if (roleID == "admirals")
+        // {
+        //     newElement.ownerImage.SetActive(false);
+        //     newElement.admiralImage.SetActive(true);
+        //     newElement.memberImage.SetActive(false);
+        // }
+        else if (roleID == "members")
+        {
+            newElement.ownerImage.SetActive(false);
+            newElement.admiralImage.SetActive(false);
+            newElement.memberImage.SetActive(true);
+        }
 
         if (_getGuildOnEnable) GuildManager.Instance.currentGuildMembers.Add(newElement);
         else _elementsToAdd.Add(newElement.gameObject);
@@ -53,8 +72,6 @@ public class DisplayGuildMembers : MonoBehaviour
         }
         else
         {
-            
-                        Debug.Log("TESTWLWIEJWLIF: DISPLAYING INFO");
             foreach (var element in _elementsToAdd)
             {
                 element.SetActive(true);
@@ -95,7 +112,6 @@ public class DisplayGuildMembers : MonoBehaviour
         },
         result =>
         {
-            Debug.Log("TESTWLWIEJWLIF: " + result.GroupName);
             GetMembers(result.Group);
         },
         error =>
@@ -133,21 +149,17 @@ public class DisplayGuildMembers : MonoBehaviour
         {
             List<string> memberIDs = new();
             List<EntityKey> memberKeys = new();
+            List<string> memberRoles = new();
             foreach (var role in result.Members)
             {
+                memberRoles.Add(role.RoleId);
                 foreach (var player in role.Members)
                 {
-                    if (player.Lineage["master_player_account"].Id != PFDataMgr.Instance.currentPlayerPlayFabID ||
-                        !_getGuildOnEnable)
-                    {
-                        Debug.Log("TESTWLWIEJWLIF: ADDING MEMBER");
-
-                        memberIDs.Add(player.Lineage["master_player_account"].Id);
-                        memberKeys.Add(player.Key);
-                    }
+                    memberIDs.Add(player.Lineage["master_player_account"].Id);
+                    memberKeys.Add(player.Key);
                 }
             }
-            GetMemberDisplayNames(memberIDs, memberKeys);
+            GetMemberDisplayNames(memberIDs, memberKeys, memberRoles);
         },
         error =>
         {
@@ -155,7 +167,7 @@ public class DisplayGuildMembers : MonoBehaviour
         });
     }
 
-    private void GetMemberDisplayNames(List<string> memberIDs, List<EntityKey> memberKeys)
+    private void GetMemberDisplayNames(List<string> memberIDs, List<EntityKey> memberKeys, List<string> memberRoles)
     {
         var csrequest = new ExecuteCloudScriptRequest
         {
@@ -176,7 +188,7 @@ public class DisplayGuildMembers : MonoBehaviour
             {
                 for (int i = 0; i < value.Count; i++)
                 {
-                    AddItem(value[i], memberIDs[i], memberKeys[i]);
+                    AddItem(value[i], memberIDs[i], memberKeys[i], memberRoles[i]);
                 }
                 DisplayMembers();
             }

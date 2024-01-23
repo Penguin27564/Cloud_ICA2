@@ -30,6 +30,6 @@ public class TooltipSystem : MonoBehaviour
 
     public static void Hide()
     {
-        if (Instance.tooltip.gameObject) Instance.tooltip.gameObject.SetActive(false);
+        Instance.tooltip.gameObject.SetActive(false);
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.Unity.VisualStudio.Editor;
 using PlayFab.GroupsModels;
 using TMPro;
 using UnityEngine;
@@ -13,6 +14,8 @@ public class UserElement : MonoBehaviour
     
     [HideInInspector]
     public EntityKey entityKey;
+
+    public GameObject ownerImage, admiralImage, memberImage;
 
     public void SetName(string name, string PlayFabID = "", EntityKey userKey = null)
     {
