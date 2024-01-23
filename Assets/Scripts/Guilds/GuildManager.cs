@@ -118,6 +118,16 @@ public class GuildManager : MonoBehaviour
                 Debug.Log("Added group to data: " + groupName);
             }, OnSharedError);
 
+            // Add admiral role
+            var rolerequest = new CreateGroupRoleRequest
+            {
+                Group = result.Group,
+                RoleId = "admirals",
+                RoleName = "Admiral"
+            };
+
+            PlayFabGroupsAPI.CreateRole(rolerequest, result => {}, OnSharedError);
+
             // Invite members
             if (initialMembers.Count > 0)
             {
