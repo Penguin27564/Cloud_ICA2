@@ -33,6 +33,11 @@ public class FriendElement : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void EnableTradeUI()
+    {
+        TradeManager.Instance.OnStartTrading.Invoke();
+    }
+
     private void Start()
     {
         _rectTransform = GetComponent<RectTransform>();
