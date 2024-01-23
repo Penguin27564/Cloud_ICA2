@@ -28,6 +28,7 @@ public class PFDataMgr : MonoBehaviour
     public float playerSpeed, playerFireRate;
     public string currentPlayerDisplayName, currentPlayerPlayFabID;
     public PlayFab.GroupsModels.EntityKey currentPlayerEntityKey;
+    public string currentPlayerGuildRole;
 
 
     [SerializeField]

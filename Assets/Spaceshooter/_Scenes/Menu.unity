@@ -24875,9 +24875,10 @@ MonoBehaviour:
   playerFireRate: 1
   currentPlayerDisplayName: 
   currentPlayerPlayFabID: 
-  currentPlayEntityKey:
+  currentPlayerEntityKey:
     Id: 
     Type: 
+  currentPlayerGuildRole: 
   _healthText: {fileID: 1209570354}
   _speedText: {fileID: 27176760}
   _fireRateText: {fileID: 1579066908}

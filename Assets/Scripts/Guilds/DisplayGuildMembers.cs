@@ -31,7 +31,6 @@ public class DisplayGuildMembers : MonoBehaviour
         newElement.SetName(name, playfabID, entityKey);
         newElement.transform.SetParent(transform);
         newElement.transform.localScale = Vector3.one;
-        Debug.Log("name: " + name + " | role: " + roleID);
         if (roleID == "admins")
         {
             newElement.ownerImage.SetActive(true);

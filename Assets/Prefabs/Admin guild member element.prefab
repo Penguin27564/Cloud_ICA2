@@ -492,6 +492,7 @@ GameObject:
   - component: {fileID: 5916480409560530550}
   - component: {fileID: 8529221045077432508}
   - component: {fileID: 5505234421650835431}
+  - component: {fileID: 137556607}
   m_Layer: 5
   m_Name: Promote
   m_TagString: Untagged
@@ -625,6 +626,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &137556607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4200075873618382679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee7522123124769488ed8fae62159234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: 
+  content: Promote
+  showDelay: 1
 --- !u!1 &4344569692469628150
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,6 +729,7 @@ GameObject:
   - component: {fileID: 7868085918027497506}
   - component: {fileID: 5092451198489012143}
   - component: {fileID: 1596378829948819252}
+  - component: {fileID: 1746792853}
   m_Layer: 5
   m_Name: Demote
   m_TagString: Untagged
@@ -846,6 +863,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1746792853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4885420696538649001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee7522123124769488ed8fae62159234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  header: 
+  content: Demote
+  showDelay: 1
 --- !u!1 &5974191293143322775
 GameObject:
   m_ObjectHideFlags: 0
@@ -1217,6 +1249,7 @@ GameObject:
   - component: {fileID: 4271002486000803655}
   - component: {fileID: 138145621491499150}
   - component: {fileID: 7936473980234065645}
+  - component: {fileID: 1205839988632263657}
   m_Layer: 5
   m_Name: Edit role panel
   m_TagString: Untagged
@@ -1284,3 +1317,24 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &1205839988632263657
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8216248198699652953}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 000fc6ab065c5fd47a8be03c367b65e1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

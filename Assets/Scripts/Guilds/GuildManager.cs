@@ -26,7 +26,7 @@ public class GuildManager : MonoBehaviour
         _instance = this;
     }
 
-    private void Awake()
+    private void Start()
     {
         // Find if player is currently in a group
         PlayFabGroupsAPI.ListMembership(new ListMembershipRequest
@@ -34,8 +34,37 @@ public class GuildManager : MonoBehaviour
         },
         result =>
         {
-            currentGroupKey = (result.Groups.Count == 0) ? null :  result.Groups[0].Group;
-            Debug.Log(currentGroupKey);
+            if (result.Groups.Count > 0)
+            {
+                currentGroupKey = result.Groups[0].Group;
+
+                PlayFabGroupsAPI.ListGroupMembers(new ListGroupMembersRequest
+                {
+                    Group = currentGroupKey
+                },
+                result =>
+                {
+                    foreach (var role in result.Members)
+                    {
+                        foreach (var player in role.Members)
+                        {
+                            if (player.Key.Id == PFDataMgr.Instance.currentPlayerEntityKey.Id)
+                            {
+                                Debug.Log("Set current player role as: " + role.RoleId);
+                                PFDataMgr.Instance.currentPlayerGuildRole = role.RoleId;
+                            }
+                        }
+                    }
+                },
+                error =>
+                {
+                    Debug.LogError(error.GenerateErrorReport());
+                });
+            }
+            else
+            {
+                currentGroupKey = null;
+            }
         },
         error =>
         {
@@ -111,10 +140,10 @@ public class GuildManager : MonoBehaviour
 
         }, OnSharedError);
     }
-    public void DeleteGroup(string groupId)
+    public void DeleteGroup(EntityKey groupKey)
     {
         // A title, or player-controlled entity with authority to do so, decides to destroy an existing group
-        var request = new DeleteGroupRequest { Group = EntityKeyMaker(groupId) };
+        var request = new DeleteGroupRequest { Group = groupKey };
         PlayFabGroupsAPI.DeleteGroup(request, OnDeleteGroup, OnSharedError);
     }
     private void OnDeleteGroup(EmptyResponse response)
@@ -216,6 +245,7 @@ public class GuildManager : MonoBehaviour
     }
     public void LeaveGroup()
     {
+        HandleOwnershipTransfer();
         var request = new RemoveMembersRequest
         { 
             Group = currentGroupKey,
@@ -225,7 +255,6 @@ public class GuildManager : MonoBehaviour
         PlayFabGroupsAPI.RemoveMembers(request, 
         result =>
         {
-            currentGroupKey = null;
             Debug.Log("Left guild");
             MessageBoxManager.Instance.DisplayMessage("Left guild");
             EntityGroupPairs.Remove(new KeyValuePair<string, string>(request.Members[0].Id, request.Group.Id));
@@ -256,9 +285,52 @@ public class GuildManager : MonoBehaviour
         result =>
         {
             MessageBoxManager.Instance.DisplayMessage("New role: " + newRoleID);
-            userElement.ownerImage.SetActive(newRoleID == "admins");
-            userElement.admiralImage.SetActive(newRoleID == "admirals");
-            userElement.memberImage.SetActive(newRoleID == "members");
+            if (userElement)
+            {
+                userElement.ownerImage.SetActive(newRoleID == "admins");
+                userElement.admiralImage.SetActive(newRoleID == "admirals");
+                userElement.memberImage.SetActive(newRoleID == "members");
+            }
+        },
+        error =>
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        });
+    }
+
+    private void HandleOwnershipTransfer()
+    {
+        PlayFabGroupsAPI.ListGroupMembers(new ListGroupMembersRequest
+        {
+            Group = currentGroupKey
+        },
+        result =>
+        {
+            if (result.Members.Count == 0)
+            {
+                DeleteGroup(currentGroupKey);
+                return;
+            }
+
+            EntityKey tempNewOwner = null;
+
+            foreach (var role in result.Members)
+            {
+                foreach (var player in role.Members)
+                {
+                    if (role.RoleId == "admirals")
+                    {
+                        ChangeMemberRole(player.Key, "admins", "admirals", null);
+                        return;
+                    }
+                    else if (role.RoleId == "members")
+                    {
+                        tempNewOwner = player.Key;
+                    }
+                }
+            }
+
+            ChangeMemberRole(tempNewOwner, "admins", "members", null);
         },
         error =>
         {
