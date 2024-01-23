@@ -46,6 +46,11 @@ public class UserElement : MonoBehaviour
         GuildManager.Instance.KickMember(entityKey);
     }
 
+    public void EditRole()
+    {
+
+    }
+
     private void Awake()
     {
         _nameText = GetComponentInChildren<TMP_Text>();
