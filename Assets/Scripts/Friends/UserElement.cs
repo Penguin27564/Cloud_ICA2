@@ -46,7 +46,12 @@ public class UserElement : MonoBehaviour
         GuildManager.Instance.KickMember(entityKey);
     }
 
-    public void EditRole()
+    public void Promote()
+    {
+
+    }
+
+    public void Demote()
     {
 
     }
