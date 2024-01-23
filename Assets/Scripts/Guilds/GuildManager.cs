@@ -237,4 +237,32 @@ public class GuildManager : MonoBehaviour
             Debug.LogError(error.GenerateErrorReport());
         });
     }
+    public void ChangeMemberRole(EntityKey memberKey, string newRoleID, string currentRoleID, UserElement userElement)
+    {
+        Debug.Log(memberKey + " | " + newRoleID + " | " + currentRoleID + " | " + userElement);
+        List<EntityKey> members = new()
+        {
+            memberKey
+        };
+        var request = new ChangeMemberRoleRequest
+        {
+            Group = currentGroupKey,
+            Members = members,
+            OriginRoleId = currentRoleID,
+            DestinationRoleId = newRoleID
+        };
+
+        PlayFabGroupsAPI.ChangeMemberRole(request,
+        result =>
+        {
+            MessageBoxManager.Instance.DisplayMessage("New role: " + newRoleID);
+            userElement.ownerImage.SetActive(newRoleID == "admins");
+            userElement.admiralImage.SetActive(newRoleID == "admirals");
+            userElement.memberImage.SetActive(newRoleID == "members");
+        },
+        error =>
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        });
+    }
 }

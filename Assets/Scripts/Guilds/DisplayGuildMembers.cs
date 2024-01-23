@@ -38,12 +38,12 @@ public class DisplayGuildMembers : MonoBehaviour
             newElement.admiralImage.SetActive(false);
             newElement.memberImage.SetActive(false);
         }
-        // else if (roleID == "admirals")
-        // {
-        //     newElement.ownerImage.SetActive(false);
-        //     newElement.admiralImage.SetActive(true);
-        //     newElement.memberImage.SetActive(false);
-        // }
+        else if (roleID == "admirals")
+        {
+            newElement.ownerImage.SetActive(false);
+            newElement.admiralImage.SetActive(true);
+            newElement.memberImage.SetActive(false);
+        }
         else if (roleID == "members")
         {
             newElement.ownerImage.SetActive(false);
@@ -129,7 +129,10 @@ public class DisplayGuildMembers : MonoBehaviour
         {
             GuildManager.Instance.currentGroupKey = result.Groups[0].Group;
             _guildName.text = result.Groups[0].GroupName;
-            _isAdmin = result.Groups[0].Roles[0].RoleName == "Administrators";
+
+            _isAdmin = result.Groups[0].Roles[0].RoleName == "Administrators" 
+                    || result.Groups[0].Roles[0].RoleName == "Admirals";
+
             _adminUI.SetActive(_isAdmin);
             GetMembers(result.Groups[0].Group);
         },
@@ -152,9 +155,9 @@ public class DisplayGuildMembers : MonoBehaviour
             List<string> memberRoles = new();
             foreach (var role in result.Members)
             {
-                memberRoles.Add(role.RoleId);
                 foreach (var player in role.Members)
                 {
+                    memberRoles.Add(role.RoleId);
                     memberIDs.Add(player.Lineage["master_player_account"].Id);
                     memberKeys.Add(player.Key);
                 }

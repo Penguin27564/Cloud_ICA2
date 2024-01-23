@@ -48,12 +48,18 @@ public class UserElement : MonoBehaviour
 
     public void Promote()
     {
-
+        if (memberImage.activeInHierarchy)
+        {
+            GuildManager.Instance.ChangeMemberRole(entityKey, "admirals", "members", this);
+        }
     }
 
     public void Demote()
     {
-
+        if (admiralImage.activeInHierarchy)
+        {
+            GuildManager.Instance.ChangeMemberRole(entityKey, "members", "admirals", this);
+        }
     }
 
     private void Awake()
