@@ -48,17 +48,33 @@ public class UserElement : MonoBehaviour
 
     public void Promote()
     {
-        if (memberImage.activeInHierarchy)
+        if (memberImage.activeInHierarchy && entityKey.Id != PFDataMgr.Instance.currentPlayerEntityKey.Id)
         {
             GuildManager.Instance.ChangeMemberRole(entityKey, "admirals", "members", this);
+        }
+        else if (entityKey.Id == PFDataMgr.Instance.currentPlayerEntityKey.Id)
+        {
+            MessageBoxManager.Instance.DisplayMessage("Unable to promote self");
+        }
+        else
+        {
+            MessageBoxManager.Instance.DisplayMessage("Unable to promote");
         }
     }
 
     public void Demote()
     {
-        if (admiralImage.activeInHierarchy)
+        if (admiralImage.activeInHierarchy && entityKey.Id != PFDataMgr.Instance.currentPlayerEntityKey.Id)
         {
             GuildManager.Instance.ChangeMemberRole(entityKey, "members", "admirals", this);
+        }
+        else if (entityKey.Id == PFDataMgr.Instance.currentPlayerEntityKey.Id)
+        {
+            MessageBoxManager.Instance.DisplayMessage("Unable to demote self");
+        }
+        else
+        {
+            MessageBoxManager.Instance.DisplayMessage("Unable to demote");
         }
     }
 

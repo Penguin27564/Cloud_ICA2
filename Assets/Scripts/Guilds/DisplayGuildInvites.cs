@@ -51,7 +51,7 @@ public class DisplayGuildInvites : MonoBehaviour
             },
             result =>
             {
-                AddElement(result.GroupName, result.Group, PFDataMgr.Instance.currentPlayEntityKey);
+                AddElement(result.GroupName, result.Group, PFDataMgr.Instance.currentPlayerEntityKey);
                 if (invite == invites[^1])
                 {
                     DisplayInvites();

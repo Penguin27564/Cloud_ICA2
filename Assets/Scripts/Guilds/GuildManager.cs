@@ -219,7 +219,7 @@ public class GuildManager : MonoBehaviour
         var request = new RemoveMembersRequest
         { 
             Group = currentGroupKey,
-            Members = new List<EntityKey>{PFDataMgr.Instance.currentPlayEntityKey} 
+            Members = new List<EntityKey>{PFDataMgr.Instance.currentPlayerEntityKey} 
         };
 
         PlayFabGroupsAPI.RemoveMembers(request, 
