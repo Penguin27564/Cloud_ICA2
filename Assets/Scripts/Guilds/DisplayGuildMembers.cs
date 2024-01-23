@@ -176,8 +176,6 @@ public class DisplayGuildMembers : MonoBehaviour
             {
                 for (int i = 0; i < value.Count; i++)
                 {
-                        Debug.Log("TESTWLWIEJWLIF: ADDING MEMBER NAME");
-
                     AddItem(value[i], memberIDs[i], memberKeys[i]);
                 }
                 DisplayMembers();
