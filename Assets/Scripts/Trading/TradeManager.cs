@@ -78,6 +78,7 @@ public class TradeManager : MonoBehaviour
         result =>
         {
             MessageBoxManager.Instance.DisplayMessage("Sent trade!");
+            DisableTradeUI();
             Debug.Log("Successfully saved trade into user data");
         },
         error =>
@@ -95,6 +96,14 @@ public class TradeManager : MonoBehaviour
         foreach (var ui in _tradingUI)
         {
             ui.SetActive(true);
+        }
+    }
+
+    private void DisableTradeUI()
+    {
+        foreach (var ui in _tradingUI)
+        {
+            ui.SetActive(false);
         }
     }
 }

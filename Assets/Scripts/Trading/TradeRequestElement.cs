@@ -35,6 +35,7 @@ public class TradeRequestElement : MonoBehaviour
         result =>
         {
             MessageBoxManager.Instance.DisplayMessage("Trade accepted!");
+            PFDataMgr.Instance.GetUserInventory();
             RemoveTradeFromData();
         },
         error =>
