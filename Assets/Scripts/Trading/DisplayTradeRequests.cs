@@ -73,48 +73,52 @@ public class DisplayTradeRequests : MonoBehaviour
         {
             if (result.Data.ContainsKey("TradeRequest"))
             {
-                Dictionary<string, string> dic = 
-                PlayFabSimpleJson.DeserializeObject<Dictionary<string, string>>(result.Data["TradeRequest"].Value.ToString());
+                List<Dictionary<string, string>> dic = 
+                PlayFabSimpleJson.DeserializeObject<List<Dictionary<string, string>>>(result.Data["TradeRequest"].Value.ToString());
 
-                // foreach(var item in dic)
-                // {
-                //     PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest()
-                //     {
-                //         PlayFabId = item.Value
-                //     },
-                //     result =>
-                //     {
-                //         AddItem(result.AccountInfo.TitleInfo.DisplayName, item.Key, item.Value);
 
-                //         if (item )
-                //     },
-                //     error =>
-                //     {
-                //         Debug.LogError(error.GenerateErrorReport());
-                //     });
-                // }
-
-                foreach (var (value, i) in dic.Select((value, i) => ( value, i )))
+                foreach (var tradeReq in dic)
                 {
-                    PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest()
+                    foreach (var info in tradeReq)
                     {
-                        PlayFabId = value.Value
-                    },
-                    result =>
-                    {
-                        AddItem(result.AccountInfo.TitleInfo.DisplayName, value.Key, value.Value);
-
-                        if (i == dic.Count - 1)
+                        Debug.Log("Key: " + info.Key + " | Value: " + info.Value);
+                        PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest()
                         {
-                            Debug.Log("DIsplay DIC");
+                            PlayFabId = info.Value
+                        },
+                        result =>
+                        {
+                            AddItem(result.AccountInfo.TitleInfo.DisplayName, info.Key, info.Value);
                             DisplayTrades();
-                        }
-                    },
-                    error =>
-                    {
-                        Debug.LogError(error.GenerateErrorReport());
-                    });
-                    // Access `value` and `i` directly here.
+                        },
+                        error =>
+                        {
+                            Debug.LogError(error.GenerateErrorReport());
+                        });
+                    }
+
+                    // foreach (var (value, i) in tradeReq.Select((value, i) => ( value, i )))
+                    // {
+                    //     PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest()
+                    //     {
+                    //         PlayFabId = value.Value
+                    //     },
+                    //     result =>
+                    //     {
+                    //         AddItem(result.AccountInfo.TitleInfo.DisplayName, value.Key, value.Value);
+
+                    //         if (i == dic.Count - 1)
+                    //         {
+                    //             Debug.Log("DIsplay DIC");
+                    //             DisplayTrades();
+                    //         }
+                    //     },
+                    //     error =>
+                    //     {
+                    //         Debug.LogError(error.GenerateErrorReport());
+                    //     });
+                    //     // Access `value` and `i` directly here.
+                    // }
                 }
             }
         },
