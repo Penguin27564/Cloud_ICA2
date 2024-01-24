@@ -6,6 +6,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 using PlayFab.Json;
 using Unity.VisualScripting;
+using UnityEditor.VersionControl;
 
 public class TradeRequestElement : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class TradeRequestElement : MonoBehaviour
 
     public List<string> accpetedInventoryInstanceIds = new();
 
+    private bool _acceptable = true;
+
     public void SetName(string _userName)
     {
         _userNameText.text = _userName;
@@ -26,6 +29,12 @@ public class TradeRequestElement : MonoBehaviour
 
     public void AcceptTrade()
     {
+        if (!_acceptable)
+        {
+            MessageBoxManager.Instance.DisplayMessage("Already own that skin");
+            return;
+        }
+
         PlayFabClientAPI.AcceptTrade(new AcceptTradeRequest
         {
             OfferingPlayerId = requesterID,
@@ -127,6 +136,15 @@ public class TradeRequestElement : MonoBehaviour
                 else if (item == "Yellow")
                 {
                     _yellowOffer.SetActive(true);
+                }
+
+                foreach (var inventoryItem in PFDataMgr.Instance.currentPlayerInventoryItems)
+                {
+                    // If the offered item shows up in the player's inventory,
+                    if (inventoryItem.ItemId == item)
+                    {
+                        _acceptable = false;
+                    }
                 }
             }
 
