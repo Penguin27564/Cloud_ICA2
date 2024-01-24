@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using PlayFab;
+using PlayFab.ClientModels;
 
 public class TradeManager : MonoBehaviour
 {
@@ -22,9 +24,51 @@ public class TradeManager : MonoBehaviour
     }
 
     [SerializeField]
-    private GameObject _tradingScreen;
+    private List<GameObject> _tradingUI;
 
     public Action OnStartTrading;
+
+    public void SengTradeRequest(string receivingID, List<string> itemOffersID, List<string> itemRequestsID)
+    {
+        PlayFabClientAPI.OpenTrade(new OpenTradeRequest
+        {
+            AllowedPlayerIds = new List<string>{ receivingID },
+            OfferedInventoryInstanceIds = itemOffersID,
+            RequestedCatalogItemIds = itemRequestsID 
+        },
+        result =>
+        {
+            // Need to store offering player (current player) id and this trade id in the receiving player's data
+            // This is to allow the accepting and cancelling of the trade requesrt
+            SaveTradeToData(receivingID, result.Trade.TradeId, result.Trade.OfferingPlayerId);
+        },
+        error =>
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        });
+    }
+
+    private void SaveTradeToData(string playerID, string tradeID, string requesterID)
+    {
+        PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest
+        {
+            FunctionName = "UpdatePlayerData",
+            FunctionParameter = new
+            {
+                TradeId = tradeID,
+                PlayFabId = playerID,
+                RequesterId = requesterID
+            }
+        },
+        result =>
+        {
+            Debug.Log("Successfully saved trade into user data");
+        },
+        error =>
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        });
+    }
 
     private void Awake()
     {
@@ -33,6 +77,9 @@ public class TradeManager : MonoBehaviour
 
     private void EnableTradeUI()
     {
-        _tradingScreen.SetActive(true);
+        foreach (var ui in _tradingUI)
+        {
+            ui.SetActive(true);
+        }
     }
 }
