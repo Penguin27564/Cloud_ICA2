@@ -92,7 +92,6 @@ public class TradePanel : MonoBehaviour
                 // Add to offers
                 Debug.Log("Added " + item.ItemId);
                 itemOffersID.Add(item.ItemInstanceId);
-                return;
             }
         }
     }
