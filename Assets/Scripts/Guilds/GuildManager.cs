@@ -74,6 +74,10 @@ public class GuildManager : MonoBehaviour
     
     // A local cache of some bits of PlayFab data
     // This cache pretty much only serves this example , and assumes that entities are uniquely identifiable by EntityId alone, which isn't technically true. Your data cache will have to be better.
+    
+    [SerializeField]
+    private List<GameObject> _guildUI;
+    
     public readonly HashSet<KeyValuePair<string, string>> EntityGroupPairs = new HashSet<KeyValuePair<string, string>>();
     public readonly Dictionary<string, string> GroupNameById = new Dictionary<string, string>();
     public EntityKey currentGroupKey;
@@ -100,6 +104,12 @@ public class GuildManager : MonoBehaviour
         {
             Debug.Log("Group Created: " + result.GroupName + " - " + result.Group.Id);
             MessageBoxManager.Instance.DisplayMessage("Guild successfully created!");
+            
+            foreach (var ui in _guildUI)
+            {
+                ui.SetActive(false);
+            }
+
             currentGroupKey = result.Group;
 
             // Add group to stored group data
@@ -171,6 +181,8 @@ public class GuildManager : MonoBehaviour
             PlayFabClientAPI.ExecuteCloudScript(dataRequest,
             result =>
             {
+                Start();
+                MessageBoxManager.Instance.DisplayMessage("Deleted group");
                 Debug.Log("Deleted group from data");
             }, OnSharedError);
 

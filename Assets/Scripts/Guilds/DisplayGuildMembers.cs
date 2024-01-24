@@ -21,7 +21,7 @@ public class DisplayGuildMembers : MonoBehaviour
     [SerializeField]
     private bool _getGuildOnEnable = true;
 
-    private bool _isAdmin = true;
+    private bool _isAdmin = false;
     private List<GameObject> _elementsToAdd = new();
     private RectTransform _rectTransform;
 
@@ -115,6 +115,8 @@ public class DisplayGuildMembers : MonoBehaviour
         },
         error =>
         {
+            _guildName.text = "Your guild";
+
             Debug.LogError(error.GenerateErrorReport());
         });
     }
