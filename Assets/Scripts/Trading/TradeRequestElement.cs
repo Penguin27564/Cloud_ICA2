@@ -4,6 +4,8 @@ using TMPro;
 using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
+using PlayFab.Json;
+using Unity.VisualScripting;
 
 public class TradeRequestElement : MonoBehaviour
 {
@@ -33,7 +35,7 @@ public class TradeRequestElement : MonoBehaviour
         result =>
         {
             MessageBoxManager.Instance.DisplayMessage("Trade accepted!");
-            Destroy(gameObject);
+            RemoveTradeFromData();
         },
         error =>
         {
@@ -44,7 +46,62 @@ public class TradeRequestElement : MonoBehaviour
 
     public void DeclineTrade()
     {
+        RemoveTradeFromData();
+    }
 
+    private void RemoveTradeFromData()
+    {
+        Debug.Log("Getting trade to remove data");
+        PlayFabClientAPI.GetUserData(new GetUserDataRequest
+        {
+            // Get current player's info to find all trade reqs
+            PlayFabId = PFDataMgr.Instance.currentPlayerPlayFabID
+        },
+        result =>
+        {
+            if (result.Data.ContainsKey("TradeRequest"))
+            {
+                List<Dictionary<string, string>> dic = 
+                PlayFabSimpleJson.DeserializeObject<List<Dictionary<string, string>>>(result.Data["TradeRequest"].Value.ToString());
+
+                foreach (var tradeReq in dic)
+                {
+                    if (tradeReq.ContainsKey(tradeID))
+                    {
+                        Debug.Log("BEFORE DELETION: " + dic.ToCommaSeparatedString());
+                        dic.Remove(tradeReq);
+
+                        PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest
+                        {
+                            FunctionName = "UpdatePlayerData",
+                            FunctionParameter = new
+                            {
+                                TradeInfo = dic,
+                                PlayFabId = PFDataMgr.Instance.currentPlayerPlayFabID,
+                                ReplaceData = "true"
+                            }
+                        },
+                        result =>
+                        {
+                            MessageBoxManager.Instance.DisplayMessage("Updated user info:");
+                            Debug.Log("Successfully saved trade into user data");
+
+                            TradeManager.Instance.OnTradeRemoved.Invoke();
+                        },
+                        error =>
+                        {
+                            Debug.LogError(error.GenerateErrorReport());
+                        });
+
+                        return;
+                    }
+                }
+            }
+        },
+        error =>
+        {
+            Debug.LogError(error.GenerateErrorReport());
+        });
     }
 
     private void GetTradeInfo()

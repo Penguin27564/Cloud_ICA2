@@ -56,7 +56,6 @@ public class DisplayTradeRequests : MonoBehaviour
 
     private void OnEnable()
     {
-        GuildManager.Instance.currentGuildMembers.Clear();
         ClearDisplay();
         GetTrades();
     }
@@ -108,6 +107,6 @@ public class DisplayTradeRequests : MonoBehaviour
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
-        GuildManager.Instance.OnMemberRemoved += OnEnable;
+        TradeManager.Instance.OnTradeRemoved += OnEnable;
     }
 }

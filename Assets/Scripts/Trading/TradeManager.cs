@@ -31,6 +31,8 @@ public class TradeManager : MonoBehaviour
     public Action OnStartTrading;
     public string receivingID;
 
+    public Action OnTradeRemoved;
+
     public void SendTradeRequest(List<string> itemOffersID, List<string> itemRequestsID)
     {
         Debug.Log("Offer item before trade: " + itemOffersID.ToCommaSeparatedString());
@@ -70,6 +72,7 @@ public class TradeManager : MonoBehaviour
             {
                 TradeInfo = tradeInfo,
                 PlayFabId = playerID,
+                ReplaceData = "false"
             }
         },
         result =>
