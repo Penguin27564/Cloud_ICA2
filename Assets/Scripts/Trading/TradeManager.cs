@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
+using UnityEditor.Experimental.GraphView;
 
 public class TradeManager : MonoBehaviour
 {
@@ -27,8 +28,9 @@ public class TradeManager : MonoBehaviour
     private List<GameObject> _tradingUI;
 
     public Action OnStartTrading;
+    public string receivingID;
 
-    public void SengTradeRequest(string receivingID, List<string> itemOffersID, List<string> itemRequestsID)
+    public void SendTradeRequest(List<string> itemOffersID, List<string> itemRequestsID)
     {
         PlayFabClientAPI.OpenTrade(new OpenTradeRequest
         {
@@ -50,14 +52,18 @@ public class TradeManager : MonoBehaviour
 
     private void SaveTradeToData(string playerID, string tradeID, string requesterID)
     {
+        Dictionary<string, string> tradeInfo = new()
+        {
+            { tradeID, requesterID }
+        };
+
         PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest
         {
             FunctionName = "UpdatePlayerData",
             FunctionParameter = new
             {
-                TradeId = tradeID,
+                TradeInfo = tradeInfo,
                 PlayFabId = playerID,
-                RequesterId = requesterID
             }
         },
         result =>

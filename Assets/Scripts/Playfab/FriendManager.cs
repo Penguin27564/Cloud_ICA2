@@ -249,7 +249,7 @@ public class FriendManager : MonoBehaviour
             {
                 //Debug.Log("PlayfabID: " + f.FriendPlayFabId + " , display name: " + f.TitleDisplayName);
                 Debug.Log(f.Tags);
-                _friendDisplayGrid.AddItem(f.TitleDisplayName);
+                _friendDisplayGrid.AddItem(f.TitleDisplayName, f.FriendPlayFabId);
             }
         });
         _friendDisplayGrid.DisplayFriendsList();
@@ -262,7 +262,7 @@ public class FriendManager : MonoBehaviour
         {
             if (f.Tags[0] == "requester")
             {
-                _requestDisplayGrid.AddItem(f.TitleDisplayName);
+                _requestDisplayGrid.AddItem(f.TitleDisplayName, f.FriendPlayFabId);
             }
         });
         _requestDisplayGrid.DisplayFriendsList();

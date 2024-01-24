@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,13 +18,17 @@ public class FriendListDisplay : MonoBehaviour
 
     private List<GameObject> _elementsToAdd = new();
 
-    public void AddItem(string name)
+    public void AddItem(string name, string PlayfabID)
     {
         FriendElement newElement = Instantiate(_friendElement);
+
         newElement.AddElement(name);
+        newElement.playFabId = PlayfabID;
+
         newElement.transform.SetParent(transform);
         newElement.transform.localScale = Vector3.one;
         _elementsToAdd.Add(newElement.gameObject);
+        
         newElement.gameObject.SetActive(false);
     }
 

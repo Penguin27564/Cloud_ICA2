@@ -9,6 +9,8 @@ public class FriendElement : MonoBehaviour
     private TMP_Text _nameText;
 
     private RectTransform _rectTransform;
+
+    public string playFabId;
     
     public void AddElement(string name)
     {
@@ -36,6 +38,7 @@ public class FriendElement : MonoBehaviour
     public void EnableTradeUI()
     {
         TradeManager.Instance.OnStartTrading.Invoke();
+        TradeManager.Instance.receivingID = playFabId;
     }
 
     private void Start()
