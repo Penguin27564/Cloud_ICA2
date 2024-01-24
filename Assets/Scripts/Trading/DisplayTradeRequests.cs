@@ -96,29 +96,6 @@ public class DisplayTradeRequests : MonoBehaviour
                             Debug.LogError(error.GenerateErrorReport());
                         });
                     }
-
-                    // foreach (var (value, i) in tradeReq.Select((value, i) => ( value, i )))
-                    // {
-                    //     PlayFabClientAPI.GetAccountInfo(new GetAccountInfoRequest()
-                    //     {
-                    //         PlayFabId = value.Value
-                    //     },
-                    //     result =>
-                    //     {
-                    //         AddItem(result.AccountInfo.TitleInfo.DisplayName, value.Key, value.Value);
-
-                    //         if (i == dic.Count - 1)
-                    //         {
-                    //             Debug.Log("DIsplay DIC");
-                    //             DisplayTrades();
-                    //         }
-                    //     },
-                    //     error =>
-                    //     {
-                    //         Debug.LogError(error.GenerateErrorReport());
-                    //     });
-                    //     // Access `value` and `i` directly here.
-                    // }
                 }
             }
         },

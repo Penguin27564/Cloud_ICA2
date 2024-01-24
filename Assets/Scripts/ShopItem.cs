@@ -59,6 +59,7 @@ public class ShopItem : MonoBehaviour
                 PlayFabClientAPI.PurchaseItem(buyreq,
                 r =>
                 {
+                    PFDataMgr.Instance.GetUserInventory();
                     Debug.Log("Bought!");
                     MessageBoxManager.Instance.DisplayMessage("Bought!");
                     InventoryManager.Instance.OnBuyItem.Invoke();

@@ -30,6 +30,8 @@ public class PFDataMgr : MonoBehaviour
     public PlayFab.GroupsModels.EntityKey currentPlayerEntityKey;
     public string currentPlayerGuildRoleId;
 
+    public List<ItemInstance> currentPlayerInventoryItems = new();
+
 
     [SerializeField]
     private TMP_Text _healthText, _speedText, _fireRateText;
@@ -207,10 +209,30 @@ public class PFDataMgr : MonoBehaviour
         });
     }
 
+    public void GetUserInventory()
+    {
+        // Get inventory skins
+        var userInv = new GetUserInventoryRequest();
+        PlayFabClientAPI.GetUserInventory(userInv,
+        result =>
+        {
+            // Find items
+            foreach (ItemInstance item in result.Inventory)
+            {
+                currentPlayerInventoryItems.Add(item);
+            }
+        },
+        error =>
+        {
+            Debug.Log(error.GenerateErrorReport());
+        });
+    }
+
     private void Awake()
     {
         GetUserData();
         GetUserInfo();
+        GetUserInventory();
     }
 
     private void UpdateUI()
