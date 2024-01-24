@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
-using Unity.VisualScripting;
 
 public class TradeRequestElement : MonoBehaviour
 {
@@ -16,9 +15,36 @@ public class TradeRequestElement : MonoBehaviour
 
     public string tradeID, requesterID;
 
+    public List<string> accpetedInventoryInstanceIds = new();
+
     public void SetName(string _userName)
     {
         _userNameText.text = _userName;
+    }
+
+    public void AcceptTrade()
+    {
+        PlayFabClientAPI.AcceptTrade(new AcceptTradeRequest
+        {
+            OfferingPlayerId = requesterID,
+            TradeId = tradeID,
+            AcceptedInventoryInstanceIds = accpetedInventoryInstanceIds
+        },
+        result =>
+        {
+            MessageBoxManager.Instance.DisplayMessage("Trade accepted!");
+            Destroy(gameObject);
+        },
+        error =>
+        {
+            Debug.Log(error.GenerateErrorReport());
+            MessageBoxManager.Instance.DisplayMessage("Error accepting trade");
+        });
+    }
+
+    public void DeclineTrade()
+    {
+
     }
 
     private void GetTradeInfo()
@@ -30,8 +56,6 @@ public class TradeRequestElement : MonoBehaviour
         },
         result =>
         {
-            Debug.Log("Offered items: " + result.Trade.OfferedCatalogItemIds.ToCommaSeparatedString());
-            Debug.Log("Requested items: " + result.Trade.RequestedCatalogItemIds.ToCommaSeparatedString());
             foreach (var item in result.Trade.OfferedCatalogItemIds)
             {
                 if (item == "Red")
@@ -61,6 +85,16 @@ public class TradeRequestElement : MonoBehaviour
                 else if (item == "Yellow")
                 {
                     _yellowRequest.SetActive(true);
+                }
+
+                foreach (var inventoryItem in PFDataMgr.Instance.currentPlayerInventoryItems)
+                {
+                    // If the requested item id shows up in the player's inventory,
+                    if (inventoryItem.ItemId == item)
+                    {
+                        Debug.Log("Added " + inventoryItem.ItemId);
+                        accpetedInventoryInstanceIds.Add(inventoryItem.ItemInstanceId);
+                    }
                 }
             }
         },
