@@ -5,8 +5,6 @@ using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
 using PlayFab.Json;
-using Unity.VisualScripting;
-using UnityEditor.VersionControl;
 
 public class TradeRequestElement : MonoBehaviour
 {
@@ -78,7 +76,6 @@ public class TradeRequestElement : MonoBehaviour
                 {
                     if (tradeReq.ContainsKey(tradeID))
                     {
-                        Debug.Log("BEFORE DELETION: " + dic.ToCommaSeparatedString());
                         dic.Remove(tradeReq);
 
                         PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest

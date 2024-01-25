@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
-using UnityEditor.VersionControl;
-using Unity.VisualScripting;
 
 public class TradeManager : MonoBehaviour
 {
@@ -35,9 +33,6 @@ public class TradeManager : MonoBehaviour
 
     public void SendTradeRequest(List<string> itemOffersID, List<string> itemRequestsID)
     {
-        Debug.Log("Offer item before trade: " + itemOffersID.ToCommaSeparatedString());
-        Debug.Log("Requested item before trade: " + itemRequestsID.ToCommaSeparatedString());
-
         PlayFabClientAPI.OpenTrade(new OpenTradeRequest
         {
             AllowedPlayerIds = new List<string>{ receivingID },
@@ -46,8 +41,6 @@ public class TradeManager : MonoBehaviour
         },
         result =>
         {
-            Debug.Log("Trade offers: " + itemOffersID.ToCommaSeparatedString());
-            Debug.Log("Trade requests: " + itemRequestsID.ToCommaSeparatedString());
             // Need to store offering player (current player) id and this trade id in the receiving player's data
             // This is to allow the accepting and cancelling of the trade requesrt
             SaveTradeToData(receivingID, result.Trade.TradeId, result.Trade.OfferingPlayerId);
